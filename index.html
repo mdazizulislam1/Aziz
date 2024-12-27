@@ -134,36 +134,6 @@
             background: #0056b3;
         }
 
-        .menu-popup {
-            display: none;
-            position: absolute;
-            top: 50px;
-            right: 10px;
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            padding: 10px;
-            width: 200px;
-            z-index: 10;
-        }
-
-        .menu-popup a {
-            display: block;
-            padding: 10px;
-            color: #007bff;
-            text-decoration: none;
-            border-bottom: 1px solid #ddd;
-            font-size: 1rem;
-        }
-
-        .menu-popup a:last-child {
-            border-bottom: none;
-        }
-
-        .menu-popup a:hover {
-            background: #f9f9f9;
-        }
     </style>
 </head>
 <body>
@@ -178,16 +148,6 @@
     </div>
 
     <div class="container">
-        <!-- Menu Button -->
-        <button class="menu-button" onclick="toggleMenu()">☰</button>
-
-        <!-- Menu Popup -->
-        <div class="menu-popup" id="menuPopup">
-            <a href="#" onclick="showWithdraw()">Withdraw</a>
-            <a href="https://t.me/mdazizulislam1">Admin Contact</a>
-            <a href="https://t.me/EarningFromMAI" target="_blank">Help</a>
-        </div>
-
         <!-- Profile Section -->
         <div class="profile-info">
             <img src="https://via.placeholder.com/60" alt="Profile Image" id="profileImage">
@@ -213,14 +173,12 @@
     <script>
         let balance = parseFloat(localStorage.getItem('balance') || '0.000');
         const adEarnings = 0.050; // Earnings per ad
-        const totalAds = 20; // Total number of ads
-
         const regularAds = [
-            { title: 'Ad 1', description: 'Watch this ad and earn 0.020 USD!', url: 'https://example.com/ad1', earnings: 0.020, code: 'AD1CODE' },
-            { title: 'Ad 2', description: 'Watch and earn 4.00 USD!', url: 'https://example.com/ad2', earnings: 4.00, code: 'AD2CODE' },
-            { title: 'Ad 3', description: 'Watch and earn 6.00 USD!', url: 'https://example.com/ad3', earnings: 6.00, code: 'AD3CODE' },
-            { title: 'Ad 4', description: 'Watch and earn 3.010 USD!', url: 'https://example.com/ad4', earnings: 3.010, code: 'AD4CODE' },
-            { title: 'Ad 5', description: 'Complete this task and earn 0.025 USD!', url: 'https://example.com/ad5', earnings: 0.025, code: 'AD5CODE' },
+            { title: 'Ad 1', description: 'Watch this ad for 60 seconds and earn 0.020 USD!', url: 'https://example.com/ad1', earnings: 0.020, code: '' },
+            { title: 'Ad 2', description: 'Watch for 60 seconds and earn 4.00 USD!', url: 'https://example.com/ad2', earnings: 4.00, code: '' },
+            { title: 'Ad 3', description: 'Watch for 60 seconds and earn 6.00 USD!', url: 'https://example.com/ad3', earnings: 6.00, code: '' },
+            { title: 'Ad 4', description: 'Watch for 60 seconds and earn 3.010 USD!', url: 'https://example.com/ad4', earnings: 3.010, code: '' },
+            { title: 'Ad 5', description: 'Watch for 60 seconds and earn 0.025 USD!', url: 'https://example.com/ad5', earnings: 0.025, code: '' }
         ];
 
         const oneTimeAds = [
@@ -228,19 +186,8 @@
             { title: 'One-Time Ad 2', description: 'Complete the task and earn 0.060 USD!', url: 'https://example.com/one-time-ad2', earnings: 0.060, code: 'ONETIME2CODE' },
             { title: 'One-Time Ad 3', description: 'Complete the task and earn 0.070 USD!', url: 'https://example.com/one-time-ad3', earnings: 0.070, code: 'ONETIME3CODE' },
             { title: 'One-Time Ad 4', description: 'Complete the task and earn 0.080 USD!', url: 'https://example.com/one-time-ad4', earnings: 0.080, code: 'ONETIME4CODE' },
-            { title: 'One-Time Ad 5', description: 'Complete the task and earn 0.090 USD!', url: 'https://example.com/one-time-ad5', earnings: 0.090, code: 'ONETIME5CODE' },
+            { title: 'One-Time Ad 5', description: 'Complete the task and earn 0.090 USD!', url: 'https://example.com/one-time-ad5', earnings: 0.090, code: 'ONETIME5CODE' }
         ];
-
-        // Toggle Menu Popup
-        function toggleMenu() {
-            const menuPopup = document.getElementById('menuPopup');
-            menuPopup.style.display = menuPopup.style.display === 'block' ? 'none' : 'block';
-        }
-
-        // Show Withdraw Message
-        function showWithdraw() {
-            alert(`Development in progress. If your balance is 5 USD or more, please contact the admin to withdraw.`);
-        }
 
         // Save Name and Close Popup
         function saveName() {
@@ -255,18 +202,9 @@
         }
 
         // Handle Regular Ad Click (60 seconds)
-        function handleRegularAdClick(adId, url, earnings, code) {
-            let lastClicked = localStorage.getItem(adId + '_lastClicked');
-            let now = Date.now();
-
-            // Check if the ad has been clicked within the last 24 hours
-            if (lastClicked && (now - lastClicked < 24 * 60 * 60 * 1000)) {
-                alert('You can only watch this ad once every 24 hours.');
-                return;
-            }
-
-            const adWindow = window.open(url, '_blank');
-            const adStartTime = Date.now();
+        function handleRegularAdClick(adId, url, earnings) {
+            let adWindow = window.open(url, '_blank');
+            let adStartTime = Date.now();
 
             const checkAdInterval = setInterval(() => {
                 if (adWindow.closed) {
@@ -280,8 +218,6 @@
                     } else {
                         alert('You must watch the ad for at least 60 seconds.');
                     }
-
-                    localStorage.setItem(adId + '_lastClicked', now);
                     clearInterval(checkAdInterval);
                 }
             }, 1000);
@@ -289,36 +225,25 @@
 
         // Handle One-Time Ad Click (Private Code)
         function handleOneTimeAdClick(adId, url, earnings, code) {
-            let lastClicked = localStorage.getItem(adId + '_lastClicked');
-            let now = Date.now();
-
-            if (lastClicked && (now - lastClicked < 24 * 60 * 60 * 1000)) {
-                alert('You can only watch this ad once every 24 hours.');
-                return;
-            }
-
-            const adWindow = window.open(url, '_blank');
-            const adStartTime = Date.now();
+            let adWindow = window.open(url, '_blank');
+            let adStartTime = Date.now();
 
             const checkAdInterval = setInterval(() => {
                 if (adWindow.closed) {
                     const elapsedTime = (Date.now() - adStartTime) / 1000; // in seconds
 
-                    if (elapsedTime >= 60) {
-                        let userCode = prompt('Please enter the code for this one-time ad:');
-                        if (userCode === code) {
-                            alert(`You have earned ${earnings} USD!`);
-                            balance += earnings;
-                            localStorage.setItem('balance', balance.toFixed(2));
-                            document.getElementById('balance').innerText = `${balance.toFixed(2)} USD`;
-                        } else {
-                            alert('Incorrect code.');
-                        }
+                    // Check for completion of ad task (no timer)
+                    const userCode = prompt('Please enter the code for this one-time ad:');
+                    if (userCode === code) {
+                        alert(`You have earned ${earnings} USD!`);
+                        balance += earnings;
+                        localStorage.setItem('balance', balance.toFixed(2));
+                        document.getElementById('balance').innerText = `${balance.toFixed(2)} USD`;
+                        localStorage.setItem(`oneTimeAdCompleted${adId}`, 'true'); // Mark as completed
                     } else {
-                        alert('You must watch the ad for at least 60 seconds.');
+                        alert('Incorrect code.');
                     }
 
-                    localStorage.setItem(adId + '_lastClicked', now);
                     clearInterval(checkAdInterval);
                 }
             }, 1000);
@@ -337,34 +262,42 @@
             const savedBalance = parseFloat(localStorage.getItem('balance') || '0.000');
             document.getElementById('balance').innerText = `${savedBalance.toFixed(2)} USD`;
 
-            // Show regular ads
+            // Show regular ads with 24-hour expiration
             const regularAdsContainer = document.getElementById('regularAdsContainer');
             regularAdsContainer.innerHTML = ''; // Clear the container before adding ads
 
             regularAds.forEach((ad, index) => {
-                const adCard = document.createElement('div');
-                adCard.classList.add('ad-card');
-                adCard.innerHTML = `
-                    <h4>${ad.title}</h4>
-                    <p>${ad.description}</p>
-                    <button onclick="handleRegularAdClick('regularAd${index+1}', '${ad.url}', ${ad.earnings}, '${ad.code}')">Start</button>
-                `;
-                regularAdsContainer.appendChild(adCard);
+                const lastAdTime = localStorage.getItem(`lastAdTime${index}`);
+                const currentTime = Date.now();
+
+                // Show ad only if 24 hours have passed
+                if (!lastAdTime || currentTime - lastAdTime >= 24 * 60 * 60 * 1000) {
+                    const adCard = document.createElement('div');
+                    adCard.classList.add('ad-card');
+                    adCard.innerHTML = `
+                        <h4>${ad.title}</h4>
+                        <p>${ad.description}</p>
+                        <button onclick="handleRegularAdClick(${index}, '${ad.url}', ${ad.earnings})">Start</button>
+                    `;
+                    regularAdsContainer.appendChild(adCard);
+                }
             });
 
-            // Show one-time ads
+            // Show one-time ads only if not completed before
             const oneTimeAdsContainer = document.getElementById('oneTimeAdsContainer');
             oneTimeAdsContainer.innerHTML = ''; // Clear the container before adding ads
 
             oneTimeAds.forEach((ad, index) => {
-                const adCard = document.createElement('div');
-                adCard.classList.add('ad-card');
-                adCard.innerHTML = `
-                    <h4>${ad.title}</h4>
-                    <p>${ad.description}</p>
-                    <button onclick="handleOneTimeAdClick('oneTimeAd${index+1}', '${ad.url}', ${ad.earnings}, '${ad.code}')">Start</button>
-                `;
-                oneTimeAdsContainer.appendChild(adCard);
+                if (!localStorage.getItem(`oneTimeAdCompleted${index}`)) {
+                    const adCard = document.createElement('div');
+                    adCard.classList.add('ad-card');
+                    adCard.innerHTML = `
+                        <h4>${ad.title}</h4>
+                        <p>${ad.description}</p>
+                        <button onclick="handleOneTimeAdClick(${index}, '${ad.url}', ${ad.earnings}, '${ad.code}')">Start</button>
+                    `;
+                    oneTimeAdsContainer.appendChild(adCard);
+                }
             });
         }
     </script>
