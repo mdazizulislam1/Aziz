@@ -160,9 +160,15 @@
             <div class="balance" id="balance">0.000 USD</div>
         </div>
 
-        <!-- Ads Section -->
-        <div class="ads-container" id="regularAdsContainer"></div>
-        <div class="ads-container" id="oneTimeAdsContainer"></div>
+        <!-- Regular Ads Section -->
+        <div class="ads-container" id="regularAdsContainer">
+            <h3>Regular Ads</h3> <!-- Regular Ads Title -->
+        </div>
+
+        <!-- One-Time Ads Section -->
+        <div class="ads-container" id="oneTimeAdsContainer">
+            <h3>One-Time Ads</h3> <!-- One-Time Ads Title -->
+        </div>
 
         <!-- Footer -->
         <footer>
@@ -215,91 +221,106 @@
                         balance += earnings;
                         localStorage.setItem('balance', balance.toFixed(2));
                         document.getElementById('balance').innerText = `${balance.toFixed(2)} USD`;
-                    } else {
-                        alert('You must watch the ad for at least 60 seconds.');
+                        
+                        // Mark ad as viewed and restrict it for 24 hours
+                        localStorage.setItem(`lastAdTime${adId}`, Date.now().toString());
+
+                        // Hide the ad for 24 hours
+                        document.querySelector(`#regularAdsContainer div:nth-child(${adId + 1})`).style.display = 'none';
                     }
                     clearInterval(checkAdInterval);
                 }
             }, 1000);
         }
 
-        // Handle One-Time Ad Click (Private Code)
-        function handleOneTimeAdClick(adId, url, earnings, code) {
+        // Handle One-Time Ad Click
+        function handleOneTimeAdClick(adId, url, earnings) {
             let adWindow = window.open(url, '_blank');
-            let adStartTime = Date.now();
+            const adStartTime = Date.now();
 
             const checkAdInterval = setInterval(() => {
                 if (adWindow.closed) {
                     const elapsedTime = (Date.now() - adStartTime) / 1000; // in seconds
 
-                    // Check for completion of ad task (no timer)
-                    const userCode = prompt('Please enter the code for this one-time ad:');
-                    if (userCode === code) {
+                    if (elapsedTime >= 60) {
                         alert(`You have earned ${earnings} USD!`);
                         balance += earnings;
                         localStorage.setItem('balance', balance.toFixed(2));
                         document.getElementById('balance').innerText = `${balance.toFixed(2)} USD`;
-                        localStorage.setItem(`oneTimeAdCompleted${adId}`, 'true'); // Mark as completed
-                    } else {
-                        alert('Incorrect code.');
-                    }
 
+                        // Mark one-time ad as completed and hide it
+                        localStorage.setItem(`oneTimeAdCompleted${adId}`, 'true');
+                        document.querySelector(`#oneTimeAdsContainer div:nth-child(${adId + 1})`).style.display = 'none';
+                    }
                     clearInterval(checkAdInterval);
                 }
             }, 1000);
         }
 
-        // Load User Info and Ads on Page Load
-        window.onload = function () {
-            const savedName = localStorage.getItem('username');
-            if (savedName) {
-                document.getElementById('profileName').innerText = savedName;
+        // Display Regular Ads (First 5 Ads)
+        function displayRegularAds() {
+            const currentTime = Date.now();
+            regularAds.forEach((ad, index) => {
+                // Check if the ad was viewed in the last 24 hours
+                const lastAdTime = localStorage.getItem(`lastAdTime${index}`);
+                if (lastAdTime && (currentTime - lastAdTime < 24 * 60 * 60 * 1000)) {
+                    // Hide the ad for 24 hours
+                    return;
+                }
+
+                const adContainer = document.createElement('div');
+                adContainer.className = 'ad-card';
+                adContainer.innerHTML = `
+                    <h4>${ad.title}</h4>
+                    <p>${ad.description}</p>
+                    <button onclick="handleRegularAdClick(${index}, '${ad.url}', ${ad.earnings})">Watch Ad</button>
+                `;
+                document.getElementById('regularAdsContainer').appendChild(adContainer);
+            });
+        }
+
+        // Display One-Time Ads
+        function displayOneTimeAds() {
+            oneTimeAds.forEach((ad, index) => {
+                // Check if the ad has been completed
+                const isCompleted = localStorage.getItem(`oneTimeAdCompleted${index}`);
+                if (isCompleted === 'true') {
+                    // Hide the ad if it's completed
+                    return;
+                }
+
+                const adContainer = document.createElement('div');
+                adContainer.className = 'ad-card';
+                adContainer.innerHTML = `
+                    <h4>${ad.title}</h4>
+                    <p>${ad.description}</p>
+                    <button onclick="handleOneTimeAdClick(${index}, '${ad.url}', ${ad.earnings})">Complete Ad</button>
+                `;
+                document.getElementById('oneTimeAdsContainer').appendChild(adContainer);
+            });
+        }
+
+        // Load Profile Name
+        function loadProfileName() {
+            const username = localStorage.getItem('username');
+            if (username) {
+                document.getElementById('profileName').innerText = username;
                 document.getElementById('popupForm').style.display = 'none';
             } else {
                 document.getElementById('popupForm').style.display = 'flex';
             }
-
-            const savedBalance = parseFloat(localStorage.getItem('balance') || '0.000');
-            document.getElementById('balance').innerText = `${savedBalance.toFixed(2)} USD`;
-
-            // Show regular ads with 24-hour expiration
-            const regularAdsContainer = document.getElementById('regularAdsContainer');
-            regularAdsContainer.innerHTML = ''; // Clear the container before adding ads
-
-            regularAds.forEach((ad, index) => {
-                const lastAdTime = localStorage.getItem(`lastAdTime${index}`);
-                const currentTime = Date.now();
-
-                // Show ad only if 24 hours have passed
-                if (!lastAdTime || currentTime - lastAdTime >= 24 * 60 * 60 * 1000) {
-                    const adCard = document.createElement('div');
-                    adCard.classList.add('ad-card');
-                    adCard.innerHTML = `
-                        <h4>${ad.title}</h4>
-                        <p>${ad.description}</p>
-                        <button onclick="handleRegularAdClick(${index}, '${ad.url}', ${ad.earnings})">Start</button>
-                    `;
-                    regularAdsContainer.appendChild(adCard);
-                }
-            });
-
-            // Show one-time ads only if not completed before
-            const oneTimeAdsContainer = document.getElementById('oneTimeAdsContainer');
-            oneTimeAdsContainer.innerHTML = ''; // Clear the container before adding ads
-
-            oneTimeAds.forEach((ad, index) => {
-                if (!localStorage.getItem(`oneTimeAdCompleted${index}`)) {
-                    const adCard = document.createElement('div');
-                    adCard.classList.add('ad-card');
-                    adCard.innerHTML = `
-                        <h4>${ad.title}</h4>
-                        <p>${ad.description}</p>
-                        <button onclick="handleOneTimeAdClick(${index}, '${ad.url}', ${ad.earnings}, '${ad.code}')">Start</button>
-                    `;
-                    oneTimeAdsContainer.appendChild(adCard);
-                }
-            });
         }
+
+        // Initialize Page
+        function init() {
+            loadProfileName();
+            displayRegularAds();
+            displayOneTimeAds();
+            document.getElementById('balance').innerText = `${balance.toFixed(2)} USD`;
+        }
+
+        init();
     </script>
+
 </body>
 </html>
