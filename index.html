@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Earning From M A I</title>
     <style>
+        /* General Styling */
         body {
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
@@ -34,6 +35,29 @@
             margin-bottom: 20px;
         }
 
+        .profile-info, .balance-info, .ads-container {
+            margin-bottom: 20px;
+        }
+
+        .profile-info img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .profile-info h3 {
+            font-size: 1.2rem;
+            margin: 5px 0;
+        }
+
+        .balance {
+            font-size: 1.6rem;
+            color: #28a745;
+            font-weight: bold;
+            text-align: center;
+        }
+
         .ad-card {
             padding: 15px;
             background: #f9f9f9;
@@ -57,106 +81,298 @@
             background: #0056b3;
         }
 
-        #timer {
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Menu Button */
+        .menu-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #007bff;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            z-index: 10;
+        }
+
+        .menu-button:hover {
+            background: #0056b3;
+        }
+
+        /* Menu Popup */
+        .menu-popup {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            width: 200px;
+            z-index: 10;
+        }
+
+        .menu-popup a {
+            display: block;
+            padding: 10px;
+            color: #007bff;
+            text-decoration: none;
+            border-bottom: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        .menu-popup a:last-child {
+            border-bottom: none;
+        }
+
+        .menu-popup a:hover {
+            background: #f9f9f9;
+        }
+
+        /* Popup Form Styling */
+        .popup-form {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .popup-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .popup-content input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .popup-content button {
+            padding: 10px 20px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .popup-content button:hover {
+            background: #0056b3;
+        }
+
+        /* Timer Styling */
+        .timer {
+            font-size: 2rem;
+            font-weight: bold;
+            color: red;
             position: absolute;
             top: 10px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.7);
-            color: #fff;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 1.5rem;
-            z-index: 9999;
+            z-index: 10;
         }
     </style>
 </head>
 <body>
+    <div class="popup-form" id="popupForm">
+        <div class="popup-content">
+            <h3>Enter Your Name</h3>
+            <input type="text" id="usernameInput" placeholder="Your Name">
+            <button onclick="saveName()">Save</button>
+        </div>
+    </div>
 
-    <div class="container" id="regularAdsContainer">
-        <h3>Regular Ads</h3>
+    <div class="container">
+        <!-- Menu Button -->
+        <button class="menu-button" onclick="toggleMenu()">☰</button>
+
+        <!-- Menu Popup -->
+        <div class="menu-popup" id="menuPopup">
+            <a href="#" onclick="showWithdraw()">Withdraw</a>
+            <a href="https://t.me/mdazizulislam1">Admin Contact</a>
+            <a href="https://t.me/EarningFromMAI" target="_blank">Help</a>
+        </div>
+
+        <!-- Profile Section -->
+        <div class="profile-info">
+            <img src="https://via.placeholder.com/60" alt="Profile Image" id="profileImage">
+            <h3 id="profileName">User Name</h3>
+        </div>
+
+        <!-- Balance Section -->
+        <div class="balance-info">
+            <h3>Your Balance:</h3>
+            <div class="balance" id="balance">0.000 USD</div>
+        </div>
+
+        <!-- Ads Section -->
+        <div class="ads-container" id="adsContainer"></div>
+
+        <!-- Footer -->
+        <footer>
+            <p>All rights reserved © 2024. Contact: <a href="https://t.me/mdazizulislam1">Admin</a></p>
+        </footer>
     </div>
 
     <script>
-        // Regular Ads Data
-        const regularAds = [
-            { title: 'Ad 1', description: 'Watch this ad for 60 seconds and earn 0.020 USD!', url: 'https://example.com/ad1', earnings: 0.020 },
-            { title: 'Ad 2', description: 'Watch for 60 seconds and earn 4.00 USD!', url: 'https://example.com/ad2', earnings: 4.00 },
-            { title: 'Ad 3', description: 'Watch for 60 seconds and earn 6.00 USD!', url: 'https://example.com/ad3', earnings: 6.00 },
-            { title: 'Ad 4', description: 'Watch for 60 seconds and earn 3.010 USD!', url: 'https://example.com/ad4', earnings: 3.010 },
-            { title: 'Ad 5', description: 'Watch for 60 seconds and earn 0.025 USD!', url: 'https://example.com/ad5', earnings: 0.025 }
+        let balance = parseFloat(localStorage.getItem('balance') || '0.000');
+        const adEarnings = 0.050; // Earnings per ad
+        const totalAds = 2; // Total number of ads
+
+        // Ad Data: 2 ads with different titles, descriptions, and URLs, and different earnings
+        const adsData = [
+            { title: 'Ad 1', description: 'আপনার তথ্য দিন এবং শেষে যা করতে বলে তাই করবেন যেমন সাইন আপ করা অ্যাপ ডাউনলোড করা আপনি অ্যাপ ডাউনলোড করে ১ ঘন্টা পর আবার ডিলিট করে দিয়েন সমস্যা নাই 0.020 USD!', url: 'https://luglawhaulsano.net/4/8635162/ad1', earnings: 0.020 },
+            { title: 'Ad 2', description: 'Watch and earn 4.00 USD!', url: 'https://example.com/ad2', earnings: 0.00 },
         ];
 
-        let timerInterval;
-        let remainingTime = 60;
+        // Toggle Menu Popup
+        function toggleMenu() {
+            const menuPopup = document.getElementById('menuPopup');
+            menuPopup.style.display = menuPopup.style.display === 'block' ? 'none' : 'block';
+        }
 
-        // Start Timer for Ad
-        function startAdTimer(adId) {
-            const timerDisplay = document.createElement('div');
-            timerDisplay.id = 'timer';
-            document.body.appendChild(timerDisplay);
+        // Show Withdraw Message
+        function showWithdraw() {
+            alert(`Development in progress. If your balance is 5 USD or more, please contact the admin to withdraw.`);
+        }
 
-            remainingTime = 60;
-            timerDisplay.style.display = 'block';
+        // Save Name and Close Popup
+        function saveName() {
+            const username = document.getElementById('usernameInput').value.trim();
+            if (username) {
+                localStorage.setItem('username', username);
+                document.getElementById('profileName').innerText = username;
+                document.getElementById('popupForm').style.display = 'none';
+            } else {
+                alert('Please enter a valid name.');
+            }
+        }
 
-            timerInterval = setInterval(() => {
-                remainingTime--;
-                timerDisplay.innerText = `Time Remaining: ${remainingTime}s`;
+        // Handle Ad Click with Timer
+        function handleAdClick(adId, url, earnings) {
+            let lastClicked = localStorage.getItem(adId + '_lastClicked');
+            let now = Date.now();
 
-                if (remainingTime <= 0) {
-                    clearInterval(timerInterval);
-                    playAlarm();  // Play sound alarm when time is up
-                    alert("Time is up! You can now close the ad.");
+            // Check if the ad has been clicked within the last 24 hours
+            if (lastClicked && (now - lastClicked < 24 * 60 * 60 * 1000)) {
+                alert('You can only watch this ad once every 24 hours.');
+                return;
+            }
+
+            const adWindow = window.open(url, '_blank');
+            const adStartTime = Date.now();
+            const timerElement = document.createElement('div');
+            timerElement.classList.add('timer');
+            document.body.appendChild(timerElement);
+
+            let timer = 60; // 60 seconds timer
+            const updateTimer = setInterval(() => {
+                timerElement.innerText = `Time Left: ${timer} seconds`;
+                timer--;
+
+                if (timer < 0) {
+                    clearInterval(updateTimer);
+                    alert('Time is up! You must have watched the ad for at least 60 seconds.');
+                    // Trigger alarm
+                    new Audio('https://www.soundjay.com/button/beep-07.wav').play();
+                }
+            }, 1000);
+
+            const checkAdInterval = setInterval(() => {
+                if (adWindow.closed) {
+                    const elapsedTime = (Date.now() - adStartTime) / 1000; // in seconds
+
+                    if (elapsedTime >= 60) {
+                        // Update balance only if the ad was watched for at least 60 seconds
+                        alert(`You have earned ${earnings} USD!`);
+                        balance += earnings;
+                        localStorage.setItem('balance', balance.toFixed(2));
+                        document.getElementById('balance').innerText = `${balance.toFixed(2)} USD`;
+                        localStorage.setItem(adId + '_lastClicked', now);
+
+                        // Hide the ad for 24 hours after successful earnings
+                        document.getElementById(adId).style.display = 'none';
+                    } else {
+                        alert('You must watch the ad for at least 60 seconds to earn!');
+                    }
+
+                    clearInterval(checkAdInterval);
+                    document.body.removeChild(timerElement); // Remove the timer
                 }
             }, 1000);
         }
 
-        // Play Sound Alarm
-        function playAlarm() {
-            const audio = new Audio('https://www.soundjay.com/button/beep-07.wav');  // Change to any sound you prefer
-            audio.play();
-        }
+        // Load User Info and Ads on Page Load
+        window.onload = function () {
+            const savedName = localStorage.getItem('username');
+            if (savedName) {
+                document.getElementById('profileName').innerText = savedName;
+                document.getElementById('popupForm').style.display = 'none';
+            } else {
+                document.getElementById('popupForm').style.display = 'flex';
+            }
 
-        // Handle Regular Ad Click (Open in iframe and start timer)
-        function handleRegularAdClick(adId) {
-            // Create iframe to open the ad page
-            let iframe = document.createElement('iframe');
-            iframe.src = regularAds[adId].url;
-            iframe.style.width = '100%';
-            iframe.style.height = '100vh';
-            iframe.style.border = 'none';
-            iframe.onload = () => {
-                startAdTimer(adId); // Start timer when iframe loads
-            };
+            const savedBalance = parseFloat(localStorage.getItem('balance') || '0.000');
+            document.getElementById('balance').innerText = `${savedBalance.toFixed(2)} USD`;
 
-            // Disable the back button by overriding the browser's back action
-            window.history.pushState(null, null, window.location.href);
-            window.onpopstate = function () {
-                alert("You cannot go back while the timer is active!");
-            };
+            // Show ads
+            const adsContainer = document.getElementById('adsContainer');
+            adsContainer.innerHTML = ''; // Clear the container before adding ads
 
-            // Append iframe to the body
-            document.body.innerHTML = ''; // Clear existing content
-            document.body.appendChild(iframe);
-        }
+            for (let i = 0; i < totalAds; i++) {
+                const adCard = document.createElement('div');
+                adCard.classList.add('ad-card');
+                adCard.id = `ad${i + 1}`;
 
-        // Display Regular Ads
-        function displayRegularAds() {
-            regularAds.forEach((ad, index) => {
-                const adContainer = document.createElement('div');
-                adContainer.className = 'ad-card';
-                adContainer.innerHTML = `
-                    <h4>${ad.title}</h4>
-                    <p>${ad.description}</p>
-                    <button onclick="handleRegularAdClick(${index})">Watch Ad</button>
-                `;
-                document.getElementById('regularAdsContainer').appendChild(adContainer);
-            });
-        }
+                const adContent = document.createElement('p');
+                adContent.innerText = `${adsData[i].title}: ${adsData[i].description}`;
 
-        // Initialize the page
-        displayRegularAds();
+                const adButton = document.createElement('button');
+                adButton.innerText = 'Watch Ad';
+                adButton.onclick = function () {
+                    handleAdClick(`ad${i + 1}`, adsData[i].url, adsData[i].earnings);
+                };
+
+                adCard.appendChild(adContent);
+                adCard.appendChild(adButton);
+                adsContainer.appendChild(adCard);
+            }
+
+            // Hide ads if they were watched in the last 24 hours
+            for (let i = 0; i < totalAds; i++) {
+                let adLastClicked = localStorage.getItem(`ad${i + 1}_lastClicked`);
+                let now = Date.now();
+                if (adLastClicked && (now - adLastClicked < 24 * 60 * 60 * 1000)) {
+                    document.getElementById(`ad${i + 1}`).style.display = 'none';
+                }
+            }
+        };
     </script>
-
 </body>
 </html>
