@@ -18,33 +18,17 @@
             font-size: 1.5rem;
             display: none;
         }
-        /* Other existing styles here */
     </style>
 </head>
 <body>
 
-    <!-- Timer Display -->
-    <div id="timer">60</div>
-
-    <div class="container">
-        <!-- Regular Ads Section -->
-        <div class="ads-container" id="regularAdsContainer">
-            <h3>Regular Ads</h3>
-        </div>
-
-        <!-- One-Time Ads Section -->
-        <div class="ads-container" id="oneTimeAdsContainer">
-            <h3>One-Time Ads</h3>
-        </div>
-
-        <!-- Footer -->
-        <footer>
-            <p>All rights reserved © 2024. Contact: <a href="https://t.me/mdazizulislam1">Admin</a></p>
-        </footer>
+    <!-- Regular Ads Section -->
+    <div class="container" id="regularAdsContainer">
+        <h3>Regular Ads</h3>
     </div>
 
     <script>
-        let balance = parseFloat(localStorage.getItem('balance') || '0.000');
+        // Regular Ads Data
         const regularAds = [
             { title: 'Ad 1', description: 'Watch this ad for 60 seconds and earn 0.020 USD!', url: 'https://example.com/ad1', earnings: 0.020 },
             { title: 'Ad 2', description: 'Watch for 60 seconds and earn 4.00 USD!', url: 'https://example.com/ad2', earnings: 4.00 },
@@ -53,104 +37,43 @@
             { title: 'Ad 5', description: 'Watch for 60 seconds and earn 0.025 USD!', url: 'https://example.com/ad5', earnings: 0.025 }
         ];
 
-        const oneTimeAds = [
-            { title: 'One-Time Ad 1', description: 'Complete the task and earn 0.050 USD!', url: 'https://example.com/one-time-ad1', earnings: 0.050, code: 'ONETIME1CODE' },
-            { title: 'One-Time Ad 2', description: 'Complete the task and earn 0.060 USD!', url: 'https://example.com/one-time-ad2', earnings: 0.060, code: 'ONETIME2CODE' },
-            { title: 'One-Time Ad 3', description: 'Complete the task and earn 0.070 USD!', url: 'https://example.com/one-time-ad3', earnings: 0.070, code: 'ONETIME3CODE' },
-            { title: 'One-Time Ad 4', description: 'Complete the task and earn 0.080 USD!', url: 'https://example.com/one-time-ad4', earnings: 0.080, code: 'ONETIME4CODE' },
-            { title: 'One-Time Ad 5', description: 'Complete the task and earn 0.090 USD!', url: 'https://example.com/one-time-ad5', earnings: 0.090, code: 'ONETIME5CODE' }
-        ];
-
-        function startTimer(duration, adId) {
-            let timerDisplay = document.getElementById('timer');
+        // Start Timer for Ad
+        function startAdTimer(adId) {
+            const timerDisplay = document.createElement('div');
+            timerDisplay.id = 'timer';
+            document.body.appendChild(timerDisplay);
+            let remainingTime = 60;
             timerDisplay.style.display = 'block';
-            let remainingTime = duration;
-            timerDisplay.innerText = remainingTime;
 
             const timerInterval = setInterval(() => {
                 remainingTime--;
                 timerDisplay.innerText = remainingTime;
+
                 if (remainingTime <= 0) {
                     clearInterval(timerInterval);
-                    // Update balance and hide ad for 24 hours
-                    alert('You have earned your reward!');
-                    balance += regularAds[adId].earnings;
-                    localStorage.setItem('balance', balance.toFixed(2));
-                    document.getElementById('balance').innerText = `${balance.toFixed(2)} USD`;
-
-                    // Mark ad as viewed and restrict it for 24 hours
-                    localStorage.setItem(`lastAdTime${adId}`, Date.now().toString());
-
-                    // Hide ad for 24 hours
-                    document.querySelector(`#regularAdsContainer div:nth-child(${adId + 1})`).style.display = 'none';
+                    playAlarm();  // Play sound alarm when time is up
+                    alert("Time is up! You can now close the ad.");
                 }
             }, 1000);
         }
 
+        // Play Sound Alarm
+        function playAlarm() {
+            const audio = new Audio('https://www.soundjay.com/button/beep-07.wav');  // Change to any sound you prefer
+            audio.play();
+        }
+
+        // Handle Regular Ad Click
         function handleRegularAdClick(adId) {
             let adWindow = window.open(regularAds[adId].url, '_blank');
-            let adStartTime = Date.now();
-            let canGoBack = false;
-
-            const checkAdInterval = setInterval(() => {
-                if (adWindow.closed) {
-                    const elapsedTime = (Date.now() - adStartTime) / 1000; // in seconds
-                    if (elapsedTime >= 60) {
-                        canGoBack = true;
-                    }
-                    clearInterval(checkAdInterval);
-                }
-            }, 1000);
-
-            // Disable back until 60 seconds is completed
-            const preventBack = setInterval(() => {
-                if (!canGoBack) {
-                    window.history.pushState(null, "", window.location.href);
-                    window.onpopstate = function () {
-                        window.history.pushState(null, "", window.location.href);
-                    };
-                } else {
-                    clearInterval(preventBack);
-                }
-            }, 100);
-
-            startTimer(60, adId);  // Start the timer for 60 seconds
+            adWindow.onload = () => {
+                startAdTimer(adId); // Start timer as soon as the ad page is opened
+            };
         }
 
-        function handleOneTimeAdClick(adId) {
-            let adWindow = window.open(oneTimeAds[adId].url, '_blank');
-            let adStartTime = Date.now();
-            const checkAdInterval = setInterval(() => {
-                if (adWindow.closed) {
-                    const elapsedTime = (Date.now() - adStartTime) / 1000; // in seconds
-                    if (elapsedTime >= 60) {
-                        let code = prompt('Enter the private code:');
-                        if (code === oneTimeAds[adId].code) {
-                            balance += oneTimeAds[adId].earnings;
-                            localStorage.setItem('balance', balance.toFixed(2));
-                            document.getElementById('balance').innerText = `${balance.toFixed(2)} USD`;
-                            alert('Code matched! You have earned your reward.');
-
-                            // Mark ad as completed and hide it
-                            localStorage.setItem(`oneTimeAdCompleted${adId}`, 'true');
-                            document.querySelector(`#oneTimeAdsContainer div:nth-child(${adId + 1})`).style.display = 'none';
-                        } else {
-                            alert('Invalid code!');
-                        }
-                    }
-                    clearInterval(checkAdInterval);
-                }
-            }, 1000);
-        }
-
+        // Display Ads
         function displayRegularAds() {
-            const currentTime = Date.now();
             regularAds.forEach((ad, index) => {
-                const lastAdTime = localStorage.getItem(`lastAdTime${index}`);
-                if (lastAdTime && (currentTime - lastAdTime < 24 * 60 * 60 * 1000)) {
-                    return; // Hide the ad for 24 hours
-                }
-
                 const adContainer = document.createElement('div');
                 adContainer.className = 'ad-card';
                 adContainer.innerHTML = `
@@ -162,31 +85,8 @@
             });
         }
 
-        function displayOneTimeAds() {
-            oneTimeAds.forEach((ad, index) => {
-                const isCompleted = localStorage.getItem(`oneTimeAdCompleted${index}`);
-                if (isCompleted === 'true') {
-                    return; // Hide the ad if completed
-                }
-
-                const adContainer = document.createElement('div');
-                adContainer.className = 'ad-card';
-                adContainer.innerHTML = `
-                    <h4>${ad.title}</h4>
-                    <p>${ad.description}</p>
-                    <button onclick="handleOneTimeAdClick(${index})">Start</button>
-                `;
-                document.getElementById('oneTimeAdsContainer').appendChild(adContainer);
-            });
-        }
-
-        function init() {
-            displayRegularAds();
-            displayOneTimeAds();
-            document.getElementById('balance').innerText = `${balance.toFixed(2)} USD`;
-        }
-
-        init();
+        // Initialize the page
+        displayRegularAds();
     </script>
 
 </body>
