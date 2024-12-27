@@ -254,7 +254,7 @@
         <div class="ads-container" id="adsContainer"></div>
 
         <div id="newAdsContainer">
-    <h3>New Ads</h3>
+    <h3>নতুন এডস</h3>
 </div>
 
         <!-- Footer -->
@@ -415,6 +415,62 @@
                     document.getElementById(`ad${i + 1}`).style.display = 'none';
                 }
             }
+            
+           // function renderNewAds() {
+    const newAdsContainer = document.getElementById('newAdsContainer');
+    newAdsContainer.innerHTML = '';
+
+    newAdsData.forEach((task) => {
+        const taskCard = document.createElement('div');
+        taskCard.classList.add('task-card');
+
+        const taskTitle = document.createElement('h4');
+        taskTitle.innerText = task.title;
+
+        const taskDescription = document.createElement('p');
+        taskDescription.innerText = task.description;
+
+        const taskLink = document.createElement('a');
+        taskLink.href = task.url;
+        taskLink.target = '_blank';
+        taskLink.innerText = "কাজ শুরু করুন";
+
+        const inputBox = document.createElement('input');
+        inputBox.type = 'text';
+        inputBox.placeholder = 'কোড লিখুন';
+        inputBox.id = `${task.id}_input`;
+
+        const submitButton = document.createElement('button');
+        submitButton.innerText = 'সাবমিট';
+        submitButton.onclick = () => verifyTask(task.id, task.privateCode, task.reward);
+
+        taskCard.appendChild(taskTitle);
+        taskCard.appendChild(taskDescription);
+        taskCard.appendChild(taskLink);
+        taskCard.appendChild(inputBox);
+        taskCard.appendChild(submitButton);
+        newAdsContainer.appendChild(taskCard);
+    });
+}
+
+function verifyTask(taskId, privateCode, reward) {
+    const userCode = document.getElementById(`${taskId}_input`).value.trim();
+
+    if (userCode === privateCode) {
+        alert(`কাজ সফল হয়েছে! আপনি ${reward} USD উপার্জন করেছেন।`);
+        balance += reward;
+        localStorage.setItem('balance', balance.toFixed(2));
+        document.getElementById('balance').innerText = `${balance.toFixed(2)} USD`;
+        document.getElementById(`${taskId}`).style.display = 'none';
+    } else {
+        alert('ভুল কোড! অনুগ্রহ করে আবার চেষ্টা করুন।');
+    }
+}
+
+window.onload = function () {
+    renderNewAds();
+             }
+          }
         };
     </script>
 </body>
