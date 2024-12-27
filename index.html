@@ -81,36 +81,6 @@
             background: #0056b3;
         }
 
-        .task-card {
-    padding: 15px;
-    background: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin-bottom: 15px;
-}
-
-.task-card input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 1rem;
-}
-
-.task-card button {
-    padding: 10px 20px;
-    background: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.task-card button:hover {
-    background: #0056b3;
-}
-       
         footer {
             text-align: center;
             margin-top: 20px;
@@ -214,7 +184,6 @@
 
         .popup-content button:hover {
             background: #0056b3;
-            
         }
     </style>
 </head>
@@ -253,10 +222,6 @@
         <!-- Ads Section -->
         <div class="ads-container" id="adsContainer"></div>
 
-        <div id="newAdsContainer">
-    <h3>নতুন এডস</h3>
-</div>
-
         <!-- Footer -->
         <footer>
             <p>All rights reserved © 2024. Contact: <a href="https://t.me/mdazizulislam1">Admin</a></p>
@@ -292,25 +257,6 @@
             { title: 'Ad 20', description: 'Watch and earn 7.00 USD!', url: 'https://example.com/ad20', earnings: 0.00 }
         ];
 
-       const newAdsData = [
-    { 
-        id: "task1", 
-        title: "Task 1", 
-        description: "এই লিংকে যান এবং কাজ সম্পন্ন করুন।", 
-        url: "https://example.com/task1", 
-        privateCode: "12345", 
-        reward: 0.10 
-    },
-    { 
-        id: "task2", 
-        title: "Task 2", 
-        description: "আপনার কাজ সম্পন্ন করুন এবং কোড সাবমিট করুন।", 
-        url: "https://example.com/task2", 
-        privateCode: "67890", 
-        reward: 0.15 
-    }
-        ];
-    
         // Toggle Menu Popup
         function toggleMenu() {
             const menuPopup = document.getElementById('menuPopup');
@@ -415,61 +361,7 @@
                     document.getElementById(`ad${i + 1}`).style.display = 'none';
                 }
             }
-            
-           // function renderNewAds() {
-    const newAdsContainer = document.getElementById('newAdsContainer');
-    newAdsContainer.innerHTML = '';
-
-    newAdsData.forEach((task) => {
-        const taskCard = document.createElement('div');
-        taskCard.classList.add('task-card');
-
-        const taskTitle = document.createElement('h4');
-        taskTitle.innerText = task.title;
-
-        const taskDescription = document.createElement('p');
-        taskDescription.innerText = task.description;
-
-        const taskLink = document.createElement('a');
-        taskLink.href = task.url;
-        taskLink.target = '_blank';
-        taskLink.innerText = "কাজ শুরু করুন";
-
-        const inputBox = document.createElement('input');
-        inputBox.type = 'text';
-        inputBox.placeholder = 'কোড লিখুন';
-        inputBox.id = `${task.id}_input`;
-
-        const submitButton = document.createElement('button');
-        submitButton.innerText = 'সাবমিট';
-        submitButton.onclick = () => verifyTask(task.id, task.privateCode, task.reward);
-
-        taskCard.appendChild(taskTitle);
-        taskCard.appendChild(taskDescription);
-        taskCard.appendChild(taskLink);
-        taskCard.appendChild(inputBox);
-        taskCard.appendChild(submitButton);
-        newAdsContainer.appendChild(taskCard);
-    });
-}
-
-function verifyTask(taskId, privateCode, reward) {
-    const userCode = document.getElementById(`${taskId}_input`).value.trim();
-
-    if (userCode === privateCode) {
-        alert(`কাজ সফল হয়েছে! আপনি ${reward} USD উপার্জন করেছেন।`);
-        balance += reward;
-        localStorage.setItem('balance', balance.toFixed(2));
-        document.getElementById('balance').innerText = `${balance.toFixed(2)} USD`;
-        document.getElementById(`${taskId}`).style.display = 'none';
-    } else {
-        alert('ভুল কোড! অনুগ্রহ করে আবার চেষ্টা করুন।');
-    }
-}
-
-window.onload = function () {
-    renderNewAds();
         };
     </script>
 </body>
-    </html>
+</html>
