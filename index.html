@@ -5,169 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Earning From M A I</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 700px;
-            background: #fff;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            margin-top: 20px;
-            position: relative;
-        }
-
-        h2 {
-            color: #333;
-            font-size: 1.8rem;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .profile-info, .balance-info, .ads-container {
-            margin-bottom: 20px;
-        }
-
-        .profile-info img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            margin-bottom: 10px;
-        }
-
-        .profile-info h3 {
-            font-size: 1.2rem;
-            margin: 5px 0;
-        }
-
-        .balance {
-            font-size: 1.6rem;
-            color: #28a745;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .ad-card {
-            padding: 15px;
-            background: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            text-align: center;
-            margin-bottom: 15px;
-        }
-
-        .ad-card button {
-            padding: 10px 20px;
-            background: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .ad-card button:hover {
-            background: #0056b3;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 0.9rem;
-            color: #666;
-        }
-
-        /* Popup Form Styling */
-        .popup-form {
+        /* Existing styles here */
+        #timer {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-
-        .popup-content {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            width: 90%;
-            max-width: 400px;
-        }
-
-        .popup-content input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-
-        .popup-content button {
-            padding: 10px 20px;
-            background: #007bff;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
             color: #fff;
-            border: none;
+            padding: 5px 10px;
             border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
+            font-size: 1.5rem;
+            display: none;
         }
-
-        .popup-content button:hover {
-            background: #0056b3;
-        }
-
+        /* Other existing styles here */
     </style>
 </head>
 <body>
 
-    <!-- Popup Form for Entering Name -->
-    <div class="popup-form" id="popupForm">
-        <div class="popup-content">
-            <h3>Enter Your Name</h3>
-            <input type="text" id="usernameInput" placeholder="Your Name">
-            <button onclick="saveName()">Save</button>
-        </div>
-    </div>
+    <!-- Timer Display -->
+    <div id="timer">60</div>
 
     <div class="container">
-        <!-- Profile Section -->
-        <div class="profile-info">
-            <img src="https://via.placeholder.com/60" alt="Profile Image" id="profileImage">
-            <h3 id="profileName">User Name</h3>
-        </div>
-
-        <!-- Balance Section -->
-        <div class="balance-info">
-            <h3>Your Balance:</h3>
-            <div class="balance" id="balance">0.000 USD</div>
-        </div>
-
         <!-- Regular Ads Section -->
         <div class="ads-container" id="regularAdsContainer">
-            <h3>Regular Ads</h3> <!-- Regular Ads Title -->
+            <h3>Regular Ads</h3>
         </div>
 
         <!-- One-Time Ads Section -->
         <div class="ads-container" id="oneTimeAdsContainer">
-            <h3>One-Time Ads</h3> <!-- One-Time Ads Title -->
+            <h3>One-Time Ads</h3>
         </div>
 
         <!-- Footer -->
@@ -178,13 +45,12 @@
 
     <script>
         let balance = parseFloat(localStorage.getItem('balance') || '0.000');
-        const adEarnings = 0.050; // Earnings per ad
         const regularAds = [
-            { title: 'Ad 1', description: 'Watch this ad for 60 seconds and earn 0.020 USD!', url: 'https://example.com/ad1', earnings: 0.020, code: '' },
-            { title: 'Ad 2', description: 'Watch for 60 seconds and earn 4.00 USD!', url: 'https://example.com/ad2', earnings: 4.00, code: '' },
-            { title: 'Ad 3', description: 'Watch for 60 seconds and earn 6.00 USD!', url: 'https://example.com/ad3', earnings: 6.00, code: '' },
-            { title: 'Ad 4', description: 'Watch for 60 seconds and earn 3.010 USD!', url: 'https://example.com/ad4', earnings: 3.010, code: '' },
-            { title: 'Ad 5', description: 'Watch for 60 seconds and earn 0.025 USD!', url: 'https://example.com/ad5', earnings: 0.025, code: '' }
+            { title: 'Ad 1', description: 'Watch this ad for 60 seconds and earn 0.020 USD!', url: 'https://example.com/ad1', earnings: 0.020 },
+            { title: 'Ad 2', description: 'Watch for 60 seconds and earn 4.00 USD!', url: 'https://example.com/ad2', earnings: 4.00 },
+            { title: 'Ad 3', description: 'Watch for 60 seconds and earn 6.00 USD!', url: 'https://example.com/ad3', earnings: 6.00 },
+            { title: 'Ad 4', description: 'Watch for 60 seconds and earn 3.010 USD!', url: 'https://example.com/ad4', earnings: 3.010 },
+            { title: 'Ad 5', description: 'Watch for 60 seconds and earn 0.025 USD!', url: 'https://example.com/ad5', earnings: 0.025 }
         ];
 
         const oneTimeAds = [
@@ -195,77 +61,94 @@
             { title: 'One-Time Ad 5', description: 'Complete the task and earn 0.090 USD!', url: 'https://example.com/one-time-ad5', earnings: 0.090, code: 'ONETIME5CODE' }
         ];
 
-        // Save Name and Close Popup
-        function saveName() {
-            const username = document.getElementById('usernameInput').value.trim();
-            if (username) {
-                localStorage.setItem('username', username);
-                document.getElementById('profileName').innerText = username;
-                document.getElementById('popupForm').style.display = 'none';
-            } else {
-                alert('Please enter a valid name.');
-            }
+        function startTimer(duration, adId) {
+            let timerDisplay = document.getElementById('timer');
+            timerDisplay.style.display = 'block';
+            let remainingTime = duration;
+            timerDisplay.innerText = remainingTime;
+
+            const timerInterval = setInterval(() => {
+                remainingTime--;
+                timerDisplay.innerText = remainingTime;
+                if (remainingTime <= 0) {
+                    clearInterval(timerInterval);
+                    // Update balance and hide ad for 24 hours
+                    alert('You have earned your reward!');
+                    balance += regularAds[adId].earnings;
+                    localStorage.setItem('balance', balance.toFixed(2));
+                    document.getElementById('balance').innerText = `${balance.toFixed(2)} USD`;
+
+                    // Mark ad as viewed and restrict it for 24 hours
+                    localStorage.setItem(`lastAdTime${adId}`, Date.now().toString());
+
+                    // Hide ad for 24 hours
+                    document.querySelector(`#regularAdsContainer div:nth-child(${adId + 1})`).style.display = 'none';
+                }
+            }, 1000);
         }
 
-        // Handle Regular Ad Click (60 seconds)
-        function handleRegularAdClick(adId, url, earnings) {
-            let adWindow = window.open(url, '_blank');
+        function handleRegularAdClick(adId) {
+            let adWindow = window.open(regularAds[adId].url, '_blank');
             let adStartTime = Date.now();
+            let canGoBack = false;
 
             const checkAdInterval = setInterval(() => {
                 if (adWindow.closed) {
                     const elapsedTime = (Date.now() - adStartTime) / 1000; // in seconds
-
                     if (elapsedTime >= 60) {
-                        alert(`You have earned ${earnings} USD!`);
-                        balance += earnings;
-                        localStorage.setItem('balance', balance.toFixed(2));
-                        document.getElementById('balance').innerText = `${balance.toFixed(2)} USD`;
-                        
-                        // Mark ad as viewed and restrict it for 24 hours
-                        localStorage.setItem(`lastAdTime${adId}`, Date.now().toString());
+                        canGoBack = true;
+                    }
+                    clearInterval(checkAdInterval);
+                }
+            }, 1000);
 
-                        // Hide the ad for 24 hours
-                        document.querySelector(`#regularAdsContainer div:nth-child(${adId + 1})`).style.display = 'none';
+            // Disable back until 60 seconds is completed
+            const preventBack = setInterval(() => {
+                if (!canGoBack) {
+                    window.history.pushState(null, "", window.location.href);
+                    window.onpopstate = function () {
+                        window.history.pushState(null, "", window.location.href);
+                    };
+                } else {
+                    clearInterval(preventBack);
+                }
+            }, 100);
+
+            startTimer(60, adId);  // Start the timer for 60 seconds
+        }
+
+        function handleOneTimeAdClick(adId) {
+            let adWindow = window.open(oneTimeAds[adId].url, '_blank');
+            let adStartTime = Date.now();
+            const checkAdInterval = setInterval(() => {
+                if (adWindow.closed) {
+                    const elapsedTime = (Date.now() - adStartTime) / 1000; // in seconds
+                    if (elapsedTime >= 60) {
+                        let code = prompt('Enter the private code:');
+                        if (code === oneTimeAds[adId].code) {
+                            balance += oneTimeAds[adId].earnings;
+                            localStorage.setItem('balance', balance.toFixed(2));
+                            document.getElementById('balance').innerText = `${balance.toFixed(2)} USD`;
+                            alert('Code matched! You have earned your reward.');
+
+                            // Mark ad as completed and hide it
+                            localStorage.setItem(`oneTimeAdCompleted${adId}`, 'true');
+                            document.querySelector(`#oneTimeAdsContainer div:nth-child(${adId + 1})`).style.display = 'none';
+                        } else {
+                            alert('Invalid code!');
+                        }
                     }
                     clearInterval(checkAdInterval);
                 }
             }, 1000);
         }
 
-        // Handle One-Time Ad Click
-        function handleOneTimeAdClick(adId, url, earnings) {
-            let adWindow = window.open(url, '_blank');
-            const adStartTime = Date.now();
-
-            const checkAdInterval = setInterval(() => {
-                if (adWindow.closed) {
-                    const elapsedTime = (Date.now() - adStartTime) / 1000; // in seconds
-
-                    if (elapsedTime >= 60) {
-                        alert(`You have earned ${earnings} USD!`);
-                        balance += earnings;
-                        localStorage.setItem('balance', balance.toFixed(2));
-                        document.getElementById('balance').innerText = `${balance.toFixed(2)} USD`;
-
-                        // Mark one-time ad as completed and hide it
-                        localStorage.setItem(`oneTimeAdCompleted${adId}`, 'true');
-                        document.querySelector(`#oneTimeAdsContainer div:nth-child(${adId + 1})`).style.display = 'none';
-                    }
-                    clearInterval(checkAdInterval);
-                }
-            }, 1000);
-        }
-
-        // Display Regular Ads (First 5 Ads)
         function displayRegularAds() {
             const currentTime = Date.now();
             regularAds.forEach((ad, index) => {
-                // Check if the ad was viewed in the last 24 hours
                 const lastAdTime = localStorage.getItem(`lastAdTime${index}`);
                 if (lastAdTime && (currentTime - lastAdTime < 24 * 60 * 60 * 1000)) {
-                    // Hide the ad for 24 hours
-                    return;
+                    return; // Hide the ad for 24 hours
                 }
 
                 const adContainer = document.createElement('div');
@@ -273,20 +156,17 @@
                 adContainer.innerHTML = `
                     <h4>${ad.title}</h4>
                     <p>${ad.description}</p>
-                    <button onclick="handleRegularAdClick(${index}, '${ad.url}', ${ad.earnings})">Watch Ad</button>
+                    <button onclick="handleRegularAdClick(${index})">Watch Ad</button>
                 `;
                 document.getElementById('regularAdsContainer').appendChild(adContainer);
             });
         }
 
-        // Display One-Time Ads
         function displayOneTimeAds() {
             oneTimeAds.forEach((ad, index) => {
-                // Check if the ad has been completed
                 const isCompleted = localStorage.getItem(`oneTimeAdCompleted${index}`);
                 if (isCompleted === 'true') {
-                    // Hide the ad if it's completed
-                    return;
+                    return; // Hide the ad if completed
                 }
 
                 const adContainer = document.createElement('div');
@@ -294,26 +174,13 @@
                 adContainer.innerHTML = `
                     <h4>${ad.title}</h4>
                     <p>${ad.description}</p>
-                    <button onclick="handleOneTimeAdClick(${index}, '${ad.url}', ${ad.earnings})">Complete Ad</button>
+                    <button onclick="handleOneTimeAdClick(${index})">Start</button>
                 `;
                 document.getElementById('oneTimeAdsContainer').appendChild(adContainer);
             });
         }
 
-        // Load Profile Name
-        function loadProfileName() {
-            const username = localStorage.getItem('username');
-            if (username) {
-                document.getElementById('profileName').innerText = username;
-                document.getElementById('popupForm').style.display = 'none';
-            } else {
-                document.getElementById('popupForm').style.display = 'flex';
-            }
-        }
-
-        // Initialize Page
         function init() {
-            loadProfileName();
             displayRegularAds();
             displayOneTimeAds();
             document.getElementById('balance').innerText = `${balance.toFixed(2)} USD`;
