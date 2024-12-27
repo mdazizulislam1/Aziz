@@ -3,41 +3,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ad Task System</title>
+    <title>Earning From M A I</title>
     <style>
+        /* General Styling */
         body {
             font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
             margin: 0;
             padding: 0;
-            background: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
         }
 
         .container {
-            max-width: 800px;
-            margin: 20px auto;
+            width: 90%;
+            max-width: 700px;
             background: #fff;
-            padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+            position: relative;
         }
 
-        h1, h3 {
+        h2 {
+            color: #333;
+            font-size: 1.8rem;
             text-align: center;
-        }
-
-        .ad-section {
             margin-bottom: 20px;
         }
 
-        .task-card {
+        .profile-info, .balance-info, .ads-container {
+            margin-bottom: 20px;
+        }
+
+        .profile-info img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .profile-info h3 {
+            font-size: 1.2rem;
+            margin: 5px 0;
+        }
+
+        .balance {
+            font-size: 1.6rem;
+            color: #28a745;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .ad-card {
             padding: 15px;
             background: #f9f9f9;
             border: 1px solid #ddd;
             border-radius: 8px;
+            text-align: center;
             margin-bottom: 15px;
         }
 
-        .task-card input[type="text"] {
+        .ad-card button {
+            padding: 10px 20px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .ad-card button:hover {
+            background: #0056b3;
+        }
+
+        .task-card {
+    padding: 15px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.task-card input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.task-card button {
+    padding: 10px 20px;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.task-card button:hover {
+    background: #0056b3;
+}
+       
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Menu Button */
+        .menu-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #007bff;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            z-index: 10;
+        }
+
+        .menu-button:hover {
+            background: #0056b3;
+        }
+
+        /* Menu Popup */
+        .menu-popup {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            width: 200px;
+            z-index: 10;
+        }
+
+        .menu-popup a {
+            display: block;
+            padding: 10px;
+            color: #007bff;
+            text-decoration: none;
+            border-bottom: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        .menu-popup a:last-child {
+            border-bottom: none;
+        }
+
+        .menu-popup a:hover {
+            background: #f9f9f9;
+        }
+
+        /* Popup Form Styling */
+        .popup-form {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .popup-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .popup-content input {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
@@ -46,113 +202,218 @@
             font-size: 1rem;
         }
 
-        .task-card button {
+        .popup-content button {
             padding: 10px 20px;
             background: #007bff;
             color: #fff;
             border: none;
             border-radius: 5px;
+            font-size: 1rem;
             cursor: pointer;
         }
 
-        .task-card button:hover {
+        .popup-content button:hover {
             background: #0056b3;
-        }
-
-        #balance-display {
-            text-align: right;
-            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
-
-<div class="container">
-    <h1>Ad Task System</h1>
-    <div id="balance-display">
-        Balance: <span id="balance">0.00</span> USD
+    <div class="popup-form" id="popupForm">
+        <div class="popup-content">
+            <h3>Enter Your Name</h3>
+            <input type="text" id="usernameInput" placeholder="Your Name">
+            <button onclick="saveName()">Save</button>
+        </div>
     </div>
 
-    <div class="ad-section" id="existingAdsContainer">
-        <h3>Existing Ads</h3>
-        <!-- Existing ads will be rendered here -->
-    </div>
+    <div class="container">
+        <!-- Menu Button -->
+        <button class="menu-button" onclick="toggleMenu()">☰</button>
 
-    <div class="ad-section" id="newAdsContainer">
-        <h3>New Ads</h3>
-        <!-- New ads will be rendered here -->
-    </div>
+        <!-- Menu Popup -->
+        <div class="menu-popup" id="menuPopup">
+            <a href="#" onclick="showWithdraw()">Withdraw</a>
+            <a href="https://t.me/mdazizulislam1">Admin Contact</a>
+            <a href="https://t.me/EarningFromMAI" target="_blank">Help</a>
+        </div>
+
+        <!-- Profile Section -->
+        <div class="profile-info">
+            <img src="https://via.placeholder.com/60" alt="Profile Image" id="profileImage">
+            <h3 id="profileName">User Name</h3>
+        </div>
+
+        <!-- Balance Section -->
+        <div class="balance-info">
+            <h3>Your Balance:</h3>
+            <div class="balance" id="balance">0.000 USD</div>
+        </div>
+
+        <!-- Ads Section -->
+        <div class="ads-container" id="adsContainer"></div>
+
+        <div id="newAdsContainer">
+    <h3>নতুন এডস</h3>
 </div>
 
-<script>
-    let balance = 0.0;
+        <!-- Footer -->
+        <footer>
+            <p>All rights reserved © 2024. Contact: <a href="https://t.me/mdazizulislam1">Admin</a></p>
+        </footer>
+    </div>
 
-    const existingAdsData = [
-        { id: "ad1", title: "Ad 1", description: "Visit the link and complete the task.", url: "https://example.com/ad1", privateCode: "abc123", reward: 0.20 },
-        { id: "ad2", title: "Ad 2", description: "Visit the link and complete the task.", url: "https://example.com/ad2", privateCode: "def456", reward: 0.25 }
-    ];
+    <script>
+        let balance = parseFloat(localStorage.getItem('balance') || '0.000');
+        const adEarnings = 0.050; // Earnings per ad
+        const totalAds = 20; // Total number of ads
 
-    const newAdsData = [
-        { id: "task1", title: "Task 1", description: "Click the link to open the task.", url: "https://example.com/task1", privateCode: "12345", reward: 0.10 },
-        { id: "task2", title: "Task 2", description: "Submit the private code after completing the task.", url: "https://example.com/task2", privateCode: "67890", reward: 0.15 }
-    ];
+        // Ad Data: 20 ads with different titles, descriptions, and URLs, and different earnings
+        const adsData = [
+            { title: 'Ad 1', description: 'আপনার তথ্য দিন এবং শেষে যা করতে বলে তাই করবেন যেমন সাইন আপ করা অ্যাপ ডাউনলোড করা আপনি অ্যাপ ডাউনলোড করে ১ ঘন্টা পর আবার ডিলিট করে দিয়েন সমস্যা নাই 0.020 USD!', url: 'https://luglawhaulsano.net/4/8635162/ad1', earnings: 0.020 },
+            { title: 'Ad 2', description: 'Watch and earn 4.00 USD!', url: 'https://example.com/ad2', earnings: 0.00 },
+            { title: 'Ad 3', description: 'Watch and earn 6.00 USD!', url: 'https://example.com/ad3', earnings: 0.00 },
+            { title: 'Ad 4', description: 'Watch and earn 3.010 USD!', url: 'https://example.com/ad4', earnings: 0.00 },
+            { title: 'Ad 5', description: 'আপনার তথ্য দিন এবং শেষে যা করতে বলে তাই করবেন যেমন সাইন আপ করা অ্যাপ ডাউনলোড করা আপনি অ্যাপ ডাউনলোড করে ১ ঘন্টা পর আবার ডিলিট করে দিয়েন সমস্যা নাই 0.025 USD!', url: 'https://www.profitablecpmrate.com/wqe02yerqh?key=f441e7cb2d4ca294e8301f7461a42644/ad5', earnings: 0.025 },
+            { title: 'Ad 6', description: 'Watch and earn 6.00 USD!', url: 'https://example.com/ad6', earnings: 0.00 },
+            { title: 'Ad 7', description: 'Watch and earn 7.50 USD!', url: 'https://example.com/ad7', earnings: 0.00 },
+            { title: 'Ad 8', description: 'Watch and earn 8.00 USD!', url: 'https://example.com/ad8', earnings: 0.00 },
+            { title: 'Ad 9', description: 'Watch and earn 9.00 USD!', url: 'https://example.com/ad9', earnings: 0.00 },
+            { title: 'Ad 10', description: 'আপনার তথ্য দিন এবং শেষে যা করতে বলে তাই করবেন যেমন সাইন আপ করা অ্যাপ ডাউনলোড করা আপনি অ্যাপ ডাউনলোড করে ১ ঘন্টা পর আবার ডিলিট করে দিয়েন সমস্যা নাই 0.020 USD!', url: 'https://luglawhaulsano.net/4/8635160/ad10', earnings: 0.020 },
+            { title: 'Ad 11', description: 'Watch and earn 5.50 USD!', url: 'https://example.com/ad11', earnings: 0.00 },
+            { title: 'Ad 12', description: 'Watch and earn 6.50 USD!', url: 'https://example.com/ad12', earnings: 0.00 },
+            { title: 'Ad 13', description: 'Watch and earn 7.50 USD!', url: 'https://example.com/ad13', earnings: 0.00 },
+            { title: 'Ad 14', description: 'Watch and earn 8.00 USD!', url: 'https://example.com/ad14', earnings: 0.00 },
+            { title: 'Ad 15', description: 'আপনার তথ্য দিন এবং শেষে যা করতে বলে তাই করবেন যেমন সাইন আপ করা অ্যাপ ডাউনলোড করা আপনি অ্যাপ ডাউনলোড করে ১ ঘন্টা পর আবার ডিলিট করে দিয়েন সমস্যা নাই 0.025 USD!', url: 'https://www.profitablecpmrate.com/tksacrk3?key=9baa4aebd3285c8cc012e37eaffe36a0/ad15', earnings: 0.025 },
+            { title: 'Ad 16', description: 'Watch and earn 7.00 USD!', url: 'https://example.com/ad16', earnings: 0.00 },
+            { title: 'Ad 17', description: 'Watch and earn 9.00 USD!', url: 'https://example.com/ad17', earnings: 0.00 },
+            { title: 'Ad 18', description: 'Watch and earn 10.00 USD!', url: 'https://example.com/ad18', earnings: 0.00 },
+            { title: 'Ad 19', description: 'Watch and earn 8.50 USD!', url: 'https://example.com/ad19', earnings: 0.00 },
+            { title: 'Ad 20', description: 'Watch and earn 7.00 USD!', url: 'https://example.com/ad20', earnings: 0.00 }
+        ];
 
-    function renderAds(containerId, adsData) {
-        const container = document.getElementById(containerId);
-        container.innerHTML = '';
-
-        adsData.forEach((ad) => {
-            const taskCard = document.createElement('div');
-            taskCard.classList.add('task-card');
-
-            const adTitle = document.createElement('h4');
-            adTitle.innerText = ad.title;
-
-            const adDescription = document.createElement('p');
-            adDescription.innerText = ad.description;
-
-            const adLink = document.createElement('a');
-            adLink.href = ad.url;
-            adLink.target = '_blank';
-            adLink.innerText = "Start Task";
-
-            const inputBox = document.createElement('input');
-            inputBox.type = 'text';
-            inputBox.placeholder = 'Enter code';
-            inputBox.id = `${ad.id}_input`;
-
-            const submitButton = document.createElement('button');
-            submitButton.innerText = 'Submit';
-            submitButton.onclick = () => verifyAd(ad.id, ad.privateCode, ad.reward);
-
-            taskCard.appendChild(adTitle);
-            taskCard.appendChild(adDescription);
-            taskCard.appendChild(adLink);
-            taskCard.appendChild(inputBox);
-            taskCard.appendChild(submitButton);
-
-            container.appendChild(taskCard);
-        });
+       const newAdsData = [
+    { 
+        id: "task1", 
+        title: "Task 1", 
+        description: "এই লিংকে যান এবং কাজ সম্পন্ন করুন।", 
+        url: "https://example.com/task1", 
+        privateCode: "12345", 
+        reward: 0.10 
+    },
+    { 
+        id: "task2", 
+        title: "Task 2", 
+        description: "আপনার কাজ সম্পন্ন করুন এবং কোড সাবমিট করুন।", 
+        url: "https://example.com/task2", 
+        privateCode: "67890", 
+        reward: 0.15 
     }
-
-    function verifyAd(adId, privateCode, reward) {
-        const userCode = document.getElementById(`${adId}_input`).value.trim();
-
-        if (userCode === privateCode) {
-            alert(`Task completed successfully! You earned ${reward} USD.`);
-            balance += reward;
-            document.getElementById('balance').innerText = balance.toFixed(2);
-            document.getElementById(adId).style.display = 'none';
-        } else {
-            alert('Incorrect code! Please try again.');
+    
+        // Toggle Menu Popup
+        function toggleMenu() {
+            const menuPopup = document.getElementById('menuPopup');
+            menuPopup.style.display = menuPopup.style.display === 'block' ? 'none' : 'block';
         }
-    }
 
-    window.onload = function () {
-        renderAds('existingAdsContainer', existingAdsData);
-        renderAds('newAdsContainer', newAdsData);
-    };
-</script>
+        // Show Withdraw Message
+        function showWithdraw() {
+            alert(`Development in progress. If your balance is 5 USD or more, please contact the admin to withdraw.`);
+        }
 
+        // Save Name and Close Popup
+        function saveName() {
+            const username = document.getElementById('usernameInput').value.trim();
+            if (username) {
+                localStorage.setItem('username', username);
+                document.getElementById('profileName').innerText = username;
+                document.getElementById('popupForm').style.display = 'none';
+            } else {
+                alert('Please enter a valid name.');
+            }
+        }
+
+        // Handle Ad Click
+        function handleAdClick(adId, url, earnings) {
+            let lastClicked = localStorage.getItem(adId + '_lastClicked');
+            let now = Date.now();
+
+            // Check if the ad has been clicked within the last 24 hours
+            if (lastClicked && (now - lastClicked < 24 * 60 * 60 * 1000)) {
+                alert('You can only watch this ad once every 24 hours.');
+                return;
+            }
+
+            const adWindow = window.open(url, '_blank');
+            const adStartTime = Date.now();
+
+            const checkAdInterval = setInterval(() => {
+                if (adWindow.closed) {
+                    const elapsedTime = (Date.now() - adStartTime) / 1000; // in seconds
+
+                    if (elapsedTime >= 60) {
+                        // Update balance only if the ad was watched for at least 60 seconds
+                        alert(`You have earned ${earnings} USD!`);
+                        balance += earnings;
+                        localStorage.setItem('balance', balance.toFixed(2));
+                        document.getElementById('balance').innerText = `${balance.toFixed(2)} USD`;
+                        localStorage.setItem(adId + '_lastClicked', now);
+
+                        // Hide the ad for 24 hours after successful earnings
+                        document.getElementById(adId).style.display = 'none';
+                    } else {
+                        alert('You must watch the ad for at least 60 seconds to earn!');
+                    }
+
+                    clearInterval(checkAdInterval);
+                }
+            }, 1000);
+        }
+
+        // Load User Info and Ads on Page Load
+        window.onload = function () {
+            const savedName = localStorage.getItem('username');
+            if (savedName) {
+                document.getElementById('profileName').innerText = savedName;
+                document.getElementById('popupForm').style.display = 'none';
+            } else {
+                document.getElementById('popupForm').style.display = 'flex';
+            }
+
+            const savedBalance = parseFloat(localStorage.getItem('balance') || '0.000');
+            document.getElementById('balance').innerText = `${savedBalance.toFixed(2)} USD`;
+
+            // Show ads
+            const adsContainer = document.getElementById('adsContainer');
+            adsContainer.innerHTML = ''; // Clear the container before adding ads
+
+            for (let i = 0; i < totalAds; i++) {
+                const adCard = document.createElement('div');
+                adCard.classList.add('ad-card');
+                adCard.id = `ad${i + 1}`;
+
+                const adContent = document.createElement('p');
+                adContent.innerText = `${adsData[i].title}: ${adsData[i].description}`;
+
+                const adButton = document.createElement('button');
+                adButton.innerText = 'Watch Ad';
+                adButton.onclick = function () {
+                    handleAdClick(`ad${i + 1}`, adsData[i].url, adsData[i].earnings);
+                };
+
+                adCard.appendChild(adContent);
+                adCard.appendChild(adButton);
+                adsContainer.appendChild(adCard);
+            }
+
+            // Hide ads if they were watched in the last 24 hours
+            for (let i = 0; i < totalAds; i++) {
+                let adLastClicked = localStorage.getItem(`ad${i + 1}_lastClicked`);
+                let now = Date.now();
+                if (adLastClicked && (now - adLastClicked < 24 * 60 * 60 * 1000)) {
+                    document.getElementById(`ad${i + 1}`).style.display = 'none';
+                }
+            }
+        };
+    </script>
 </body>
 </html>
