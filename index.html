@@ -1,113 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="monetag" content="09d9e6c12c44ac8ec0b6bfec391e1e0f">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Adsterra Website</title>
+    <title>Ad Task System</title>
     <style>
-        /* Global Styles */
-        * {
+        body {
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            background: #f4f4f4;
         }
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.6;
-        }
-        /* Header Styles */
-        header {
-            background: linear-gradient(90deg, #4caf50, #45a1ff);
-            color: white;
-            text-align: center;
-            padding: 20px 0;
-        }
-        header h1 {
-            font-size: 2.5rem;
-        }
-        header p {
-            font-size: 1.2rem;
-        }
-        /* Main Section */
-        main {
-            max-width: 1200px;
+
+        .container {
+            max-width: 800px;
             margin: 20px auto;
-            padding: 20px;
-        }
-        .card {
-            background: white;
-            margin: 20px 0;
+            background: #fff;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .card h2 {
-            color: #4caf50;
-        }
-        .card p {
-            margin: 10px 0;
-        }
-        /* Footer Styles */
-        footer {
-            background-color: #333;
-            color: white;
+
+        h1, h3 {
             text-align: center;
-            padding: 10px 0;
-            position: relative;
-            bottom: 0;
+        }
+
+        .ad-section {
+            margin-bottom: 20px;
+        }
+
+        .task-card {
+            padding: 15px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .task-card input[type="text"] {
             width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
         }
-        footer p {
-            font-size: 0.9rem;
+
+        .task-card button {
+            padding: 10px 20px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 2rem;
-            }
-            header p {
-                font-size: 1rem;
-            }
-            .card {
-                padding: 15px;
-            }
+
+        .task-card button:hover {
+            background: #0056b3;
+        }
+
+        #balance-display {
+            text-align: right;
+            margin-bottom: 20px;
         }
     </style>
-    <!-- Adsterra Monetag Script -->
-    <script>
-        // Replace 'YOUR_ADSTERRA_CODE' with your Adsterra Monetag code
-        (function() {
-            var script = document.createElement('script');
-            script.src = 'https://YOUR_ADSTERRA_CODE.js';
-            document.head.appendChild(script);
-        })();
-    </script>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <h1>Welcome to My Adsterra Website</h1>
-        <p>Your Gateway to Earning Online</p>
-    </header>
 
-    <!-- Main Content -->
-    <main>
-        <div class="card">
-            <h2>About Us</h2>
-            <p>We provide high-quality content and the opportunity to monetize through Adsterra ads. Start earning today!</p>
-        </div>
-        <div class="card">
-            <h2>Why Choose Us?</h2>
-            <p>We use professional designs and integrate the best monetization techniques to help you succeed.</p>
-        </div>
-    </main>
+<div class="container">
+    <h1>Ad Task System</h1>
+    <div id="balance-display">
+        Balance: <span id="balance">0.00</span> USD
+    </div>
 
-    <!-- Footer -->
-    <footer>
-        <p>© 2024 My Adsterra Website | Designed for Monetization</p>
-    </footer>
+    <div class="ad-section" id="existingAdsContainer">
+        <h3>Existing Ads</h3>
+        <!-- Existing ads will be rendered here -->
+    </div>
+
+    <div class="ad-section" id="newAdsContainer">
+        <h3>New Ads</h3>
+        <!-- New ads will be rendered here -->
+    </div>
+</div>
+
+<script>
+    let balance = 0.0;
+
+    const existingAdsData = [
+        { id: "ad1", title: "Ad 1", description: "Visit the link and complete the task.", url: "https://example.com/ad1", privateCode: "abc123", reward: 0.20 },
+        { id: "ad2", title: "Ad 2", description: "Visit the link and complete the task.", url: "https://example.com/ad2", privateCode: "def456", reward: 0.25 }
+    ];
+
+    const newAdsData = [
+        { id: "task1", title: "Task 1", description: "Click the link to open the task.", url: "https://example.com/task1", privateCode: "12345", reward: 0.10 },
+        { id: "task2", title: "Task 2", description: "Submit the private code after completing the task.", url: "https://example.com/task2", privateCode: "67890", reward: 0.15 }
+    ];
+
+    function renderAds(containerId, adsData) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+
+        adsData.forEach((ad) => {
+            const taskCard = document.createElement('div');
+            taskCard.classList.add('task-card');
+
+            const adTitle = document.createElement('h4');
+            adTitle.innerText = ad.title;
+
+            const adDescription = document.createElement('p');
+            adDescription.innerText = ad.description;
+
+            const adLink = document.createElement('a');
+            adLink.href = ad.url;
+            adLink.target = '_blank';
+            adLink.innerText = "Start Task";
+
+            const inputBox = document.createElement('input');
+            inputBox.type = 'text';
+            inputBox.placeholder = 'Enter code';
+            inputBox.id = `${ad.id}_input`;
+
+            const submitButton = document.createElement('button');
+            submitButton.innerText = 'Submit';
+            submitButton.onclick = () => verifyAd(ad.id, ad.privateCode, ad.reward);
+
+            taskCard.appendChild(adTitle);
+            taskCard.appendChild(adDescription);
+            taskCard.appendChild(adLink);
+            taskCard.appendChild(inputBox);
+            taskCard.appendChild(submitButton);
+
+            container.appendChild(taskCard);
+        });
+    }
+
+    function verifyAd(adId, privateCode, reward) {
+        const userCode = document.getElementById(`${adId}_input`).value.trim();
+
+        if (userCode === privateCode) {
+            alert(`Task completed successfully! You earned ${reward} USD.`);
+            balance += reward;
+            document.getElementById('balance').innerText = balance.toFixed(2);
+            document.getElementById(adId).style.display = 'none';
+        } else {
+            alert('Incorrect code! Please try again.');
+        }
+    }
+
+    window.onload = function () {
+        renderAds('existingAdsContainer', existingAdsData);
+        renderAds('newAdsContainer', newAdsData);
+    };
+</script>
+
 </body>
 </html>
