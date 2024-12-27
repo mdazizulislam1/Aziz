@@ -186,28 +186,18 @@
             background: #0056b3;
         }
 
-        /* Timer styling */
-        .timer {
-            position: absolute;
+        /* Timer Styling */
+        .timer-container {
+            position: fixed;
             top: 10px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 5px 10px;
+            background: #ff0000;
+            color: #fff;
+            padding: 5px 20px;
             border-radius: 5px;
             font-size: 1.5rem;
-        }
-
-        /* Prevent page navigation */
-        .prevent-back {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 9998;
+            display: none;
         }
     </style>
 </head>
@@ -252,10 +242,15 @@
         </footer>
     </div>
 
+    <div class="timer-container" id="timerContainer">60</div>
+
     <script>
         let balance = parseFloat(localStorage.getItem('balance') || '0.000');
         const adEarnings = 0.050; // Earnings per ad
         const totalAds = 2; // Total number of ads
+        let adStartTime;
+        let adTimer;
+        let isAdActive = false;
 
         // Ad Data: 2 ads with different titles, descriptions, and URLs, and different earnings
         const adsData = [
@@ -299,31 +294,31 @@
 
             const adWindow = window.open(url, '_blank');
             const adStartTime = Date.now();
+            isAdActive = true;
 
-            const timerDiv = adWindow.document.createElement('div');
-            timerDiv.classList.add('timer');
-            adWindow.document.body.appendChild(timerDiv);
+            // Start Timer
+            let timeRemaining = 60;
+            document.getElementById('timerContainer').style.display = 'block';
+            adTimer = setInterval(() => {
+                timeRemaining--;
+                document.getElementById('timerContainer').innerText = timeRemaining;
 
-            let timeLeft = 60;
-            let timerInterval = setInterval(() => {
-                if (timeLeft > 0) {
-                    timeLeft--;
-                    timerDiv.innerText = `Time Left: ${timeLeft}s`;
-                } else {
-                    alert(`You have earned ${earnings} USD!`);
+                if (timeRemaining <= 0) {
+                    clearInterval(adTimer);
+                    document.getElementById('timerContainer').style.display = 'none';
+                    alert('Ad time is over! You can now close the window.');
+                    isAdActive = false;
                     balance += earnings;
                     localStorage.setItem('balance', balance.toFixed(2));
                     document.getElementById('balance').innerText = `${balance.toFixed(2)} USD`;
                     localStorage.setItem(adId + '_lastClicked', now);
                     adWindow.close();
-                    clearInterval(timerInterval);
                 }
             }, 1000);
 
-            adWindow.onbeforeunload = function () {
-                if (timeLeft > 0) {
-                    alert('You must watch the ad for at least 60 seconds to earn!');
-                    return false; // Prevent the window from closing
+            adWindow.onbeforeunload = function() {
+                if (isAdActive) {
+                    return "You cannot leave the ad before the timer ends.";
                 }
             };
         }
