@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Earning From M A I</title>
     <style>
-        /* General Styling */
         body {
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
@@ -88,57 +87,6 @@
             color: #666;
         }
 
-        /* Menu Button */
-        .menu-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #007bff;
-            color: #fff;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1.2rem;
-            z-index: 10;
-        }
-
-        .menu-button:hover {
-            background: #0056b3;
-        }
-
-        /* Menu Popup */
-        .menu-popup {
-            display: none;
-            position: absolute;
-            top: 50px;
-            right: 10px;
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            padding: 10px;
-            width: 200px;
-            z-index: 10;
-        }
-
-        .menu-popup a {
-            display: block;
-            padding: 10px;
-            color: #007bff;
-            text-decoration: none;
-            border-bottom: 1px solid #ddd;
-            font-size: 1rem;
-        }
-
-        .menu-popup a:last-child {
-            border-bottom: none;
-        }
-
-        .menu-popup a:hover {
-            background: #f9f9f9;
-        }
-
         /* Popup Form Styling */
         .popup-form {
             position: fixed;
@@ -185,9 +133,42 @@
         .popup-content button:hover {
             background: #0056b3;
         }
+
+        .menu-popup {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            width: 200px;
+            z-index: 10;
+        }
+
+        .menu-popup a {
+            display: block;
+            padding: 10px;
+            color: #007bff;
+            text-decoration: none;
+            border-bottom: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        .menu-popup a:last-child {
+            border-bottom: none;
+        }
+
+        .menu-popup a:hover {
+            background: #f9f9f9;
+        }
     </style>
 </head>
 <body>
+
+    <!-- Popup Form for Entering Name -->
     <div class="popup-form" id="popupForm">
         <div class="popup-content">
             <h3>Enter Your Name</h3>
@@ -233,28 +214,18 @@
         const adEarnings = 0.050; // Earnings per ad
         const totalAds = 20; // Total number of ads
 
-        // Ad Data: 20 ads with different titles, descriptions, and URLs, and different earnings
         const adsData = [
-            { title: 'Ad 1', description: 'আপনার তথ্য দিন এবং শেষে যা করতে বলে তাই করবেন যেমন সাইন আপ করা অ্যাপ ডাউনলোড করা আপনি অ্যাপ ডাউনলোড করে ১ ঘন্টা পর আবার ডিলিট করে দিয়েন সমস্যা নাই 0.020 USD!', url: 'https://luglawhaulsano.net/4/8635162/ad1', earnings: 0.020 },
-            { title: 'Ad 2', description: 'Watch and earn 4.00 USD!', url: 'https://example.com/ad2', earnings: 0.00 },
-            { title: 'Ad 3', description: 'Watch and earn 6.00 USD!', url: 'https://example.com/ad3', earnings: 0.00 },
-            { title: 'Ad 4', description: 'Watch and earn 3.010 USD!', url: 'https://example.com/ad4', earnings: 0.00 },
-            { title: 'Ad 5', description: 'আপনার তথ্য দিন এবং শেষে যা করতে বলে তাই করবেন যেমন সাইন আপ করা অ্যাপ ডাউনলোড করা আপনি অ্যাপ ডাউনলোড করে ১ ঘন্টা পর আবার ডিলিট করে দিয়েন সমস্যা নাই 0.025 USD!', url: 'https://www.profitablecpmrate.com/wqe02yerqh?key=f441e7cb2d4ca294e8301f7461a42644/ad5', earnings: 0.025 },
-            { title: 'Ad 6', description: 'Watch and earn 6.00 USD!', url: 'https://example.com/ad6', earnings: 0.00 },
-            { title: 'Ad 7', description: 'Watch and earn 7.50 USD!', url: 'https://example.com/ad7', earnings: 0.00 },
-            { title: 'Ad 8', description: 'Watch and earn 8.00 USD!', url: 'https://example.com/ad8', earnings: 0.00 },
-            { title: 'Ad 9', description: 'Watch and earn 9.00 USD!', url: 'https://example.com/ad9', earnings: 0.00 },
-            { title: 'Ad 10', description: 'আপনার তথ্য দিন এবং শেষে যা করতে বলে তাই করবেন যেমন সাইন আপ করা অ্যাপ ডাউনলোড করা আপনি অ্যাপ ডাউনলোড করে ১ ঘন্টা পর আবার ডিলিট করে দিয়েন সমস্যা নাই 0.020 USD!', url: 'https://luglawhaulsano.net/4/8635160/ad10', earnings: 0.020 },
-            { title: 'Ad 11', description: 'Watch and earn 5.50 USD!', url: 'https://example.com/ad11', earnings: 0.00 },
-            { title: 'Ad 12', description: 'Watch and earn 6.50 USD!', url: 'https://example.com/ad12', earnings: 0.00 },
-            { title: 'Ad 13', description: 'Watch and earn 7.50 USD!', url: 'https://example.com/ad13', earnings: 0.00 },
-            { title: 'Ad 14', description: 'Watch and earn 8.00 USD!', url: 'https://example.com/ad14', earnings: 0.00 },
-            { title: 'Ad 15', description: 'আপনার তথ্য দিন এবং শেষে যা করতে বলে তাই করবেন যেমন সাইন আপ করা অ্যাপ ডাউনলোড করা আপনি অ্যাপ ডাউনলোড করে ১ ঘন্টা পর আবার ডিলিট করে দিয়েন সমস্যা নাই 0.025 USD!', url: 'https://www.profitablecpmrate.com/tksacrk3?key=9baa4aebd3285c8cc012e37eaffe36a0/ad15', earnings: 0.025 },
-            { title: 'Ad 16', description: 'Watch and earn 7.00 USD!', url: 'https://example.com/ad16', earnings: 0.00 },
-            { title: 'Ad 17', description: 'Watch and earn 9.00 USD!', url: 'https://example.com/ad17', earnings: 0.00 },
-            { title: 'Ad 18', description: 'Watch and earn 10.00 USD!', url: 'https://example.com/ad18', earnings: 0.00 },
-            { title: 'Ad 19', description: 'Watch and earn 8.50 USD!', url: 'https://example.com/ad19', earnings: 0.00 },
-            { title: 'Ad 20', description: 'Watch and earn 7.00 USD!', url: 'https://example.com/ad20', earnings: 0.00 }
+            { title: 'Ad 1', description: 'আপনার তথ্য দিন এবং শেষে যা করতে বলে তাই করবেন...', url: 'https://luglawhaulsano.net/4/8635162/ad1', earnings: 0.020, code: 'AD1CODE' },
+            { title: 'Ad 2', description: 'Watch and earn 4.00 USD!', url: 'https://example.com/ad2', earnings: 0.00, code: 'AD2CODE' },
+            { title: 'Ad 3', description: 'Watch and earn 6.00 USD!', url: 'https://example.com/ad3', earnings: 0.00, code: 'AD3CODE' },
+            { title: 'Ad 4', description: 'Watch and earn 3.010 USD!', url: 'https://example.com/ad4', earnings: 0.00, code: 'AD4CODE' },
+            { title: 'Ad 5', description: 'আপনার তথ্য দিন এবং শেষে যা করতে বলে...', url: 'https://www.profitablecpmrate.com/wqe02yerqh?key=f441e7cb2d4ca294e8301f7461a42644/ad5', earnings: 0.025, code: 'AD5CODE' },
+            { title: 'Ad 6', description: 'Watch and earn 6.00 USD!', url: 'https://example.com/ad6', earnings: 0.00, code: 'AD6CODE' },
+            { title: 'Ad 7', description: 'Watch and earn 7.50 USD!', url: 'https://example.com/ad7', earnings: 0.00, code: 'AD7CODE' },
+            { title: 'Ad 8', description: 'Watch and earn 8.00 USD!', url: 'https://example.com/ad8', earnings: 0.00, code: 'AD8CODE' },
+            { title: 'Ad 9', description: 'Watch and earn 9.00 USD!', url: 'https://example.com/ad9', earnings: 0.00, code: 'AD9CODE' },
+            { title: 'Ad 10', description: 'আপনার তথ্য দিন এবং শেষে যা করতে বলে...', url: 'https://luglawhaulsano.net/4/8635160/ad10', earnings: 0.020, code: 'AD10CODE' },
+            // Other ads go here (Ad 11 to Ad 20)
         ];
 
         // Toggle Menu Popup
@@ -281,7 +252,7 @@
         }
 
         // Handle Ad Click
-        function handleAdClick(adId, url, earnings) {
+        function handleAdClick(adId, url, earnings, code) {
             let lastClicked = localStorage.getItem(adId + '_lastClicked');
             let now = Date.now();
 
@@ -298,8 +269,11 @@
                 if (adWindow.closed) {
                     const elapsedTime = (Date.now() - adStartTime) / 1000; // in seconds
 
-                    if (elapsedTime >= 60) {
-                        // Update balance only if the ad was watched for at least 60 seconds
+                    // Prompt user for code input
+                    let userCode = prompt('Please enter the code for this ad:');
+
+                    if (userCode === code && elapsedTime >= 60) {
+                        // Update balance only if the ad was watched for at least 60 seconds and the correct code is entered
                         alert(`You have earned ${earnings} USD!`);
                         balance += earnings;
                         localStorage.setItem('balance', balance.toFixed(2));
@@ -308,6 +282,8 @@
 
                         // Hide the ad for 24 hours after successful earnings
                         document.getElementById(adId).style.display = 'none';
+                    } else if (userCode !== code) {
+                        alert('Incorrect code entered.');
                     } else {
                         alert('You must watch the ad for at least 60 seconds to earn!');
                     }
@@ -334,34 +310,18 @@
             const adsContainer = document.getElementById('adsContainer');
             adsContainer.innerHTML = ''; // Clear the container before adding ads
 
-            for (let i = 0; i < totalAds; i++) {
+            for (let i = 0; i < adsData.length; i++) {
                 const adCard = document.createElement('div');
                 adCard.classList.add('ad-card');
-                adCard.id = `ad${i + 1}`;
-
-                const adContent = document.createElement('p');
-                adContent.innerText = `${adsData[i].title}: ${adsData[i].description}`;
-
-                const adButton = document.createElement('button');
-                adButton.innerText = 'Watch Ad';
-                adButton.onclick = function () {
-                    handleAdClick(`ad${i + 1}`, adsData[i].url, adsData[i].earnings);
-                };
-
-                adCard.appendChild(adContent);
-                adCard.appendChild(adButton);
+                adCard.innerHTML = `
+                    <h4>${adsData[i].title}</h4>
+                    <p>${adsData[i].description}</p>
+                    <input type="text" id="ad${i+1}Code" placeholder="Enter Code">
+                    <button onclick="handleAdClick('ad${i+1}', '${adsData[i].url}', ${adsData[i].earnings}, '${adsData[i].code}')">Submit</button>
+                `;
                 adsContainer.appendChild(adCard);
             }
-
-            // Hide ads if they were watched in the last 24 hours
-            for (let i = 0; i < totalAds; i++) {
-                let adLastClicked = localStorage.getItem(`ad${i + 1}_lastClicked`);
-                let now = Date.now();
-                if (adLastClicked && (now - adLastClicked < 24 * 60 * 60 * 1000)) {
-                    document.getElementById(`ad${i + 1}`).style.display = 'none';
-                }
-            }
-        };
+        }
     </script>
 </body>
 </html>
