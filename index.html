@@ -5,9 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Earning From M A I</title>
     <style>
-        /* Existing styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 700px;
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+            position: relative;
+        }
+
+        h2 {
+            color: #333;
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .ad-card {
+            padding: 15px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .ad-card button {
+            padding: 10px 20px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .ad-card button:hover {
+            background: #0056b3;
+        }
+
         #timer {
-            position: fixed;
+            position: absolute;
             top: 10px;
             left: 50%;
             transform: translateX(-50%);
@@ -16,13 +67,12 @@
             padding: 5px 10px;
             border-radius: 5px;
             font-size: 1.5rem;
-            display: none;
+            z-index: 9999;
         }
     </style>
 </head>
 <body>
 
-    <!-- Regular Ads Section -->
     <div class="container" id="regularAdsContainer">
         <h3>Regular Ads</h3>
     </div>
@@ -37,17 +87,21 @@
             { title: 'Ad 5', description: 'Watch for 60 seconds and earn 0.025 USD!', url: 'https://example.com/ad5', earnings: 0.025 }
         ];
 
+        let timerInterval;
+        let remainingTime = 60;
+
         // Start Timer for Ad
         function startAdTimer(adId) {
             const timerDisplay = document.createElement('div');
             timerDisplay.id = 'timer';
             document.body.appendChild(timerDisplay);
-            let remainingTime = 60;
+
+            remainingTime = 60;
             timerDisplay.style.display = 'block';
 
-            const timerInterval = setInterval(() => {
+            timerInterval = setInterval(() => {
                 remainingTime--;
-                timerDisplay.innerText = remainingTime;
+                timerDisplay.innerText = `Time Remaining: ${remainingTime}s`;
 
                 if (remainingTime <= 0) {
                     clearInterval(timerInterval);
@@ -63,15 +117,30 @@
             audio.play();
         }
 
-        // Handle Regular Ad Click
+        // Handle Regular Ad Click (Open in iframe and start timer)
         function handleRegularAdClick(adId) {
-            let adWindow = window.open(regularAds[adId].url, '_blank');
-            adWindow.onload = () => {
-                startAdTimer(adId); // Start timer as soon as the ad page is opened
+            // Create iframe to open the ad page
+            let iframe = document.createElement('iframe');
+            iframe.src = regularAds[adId].url;
+            iframe.style.width = '100%';
+            iframe.style.height = '100vh';
+            iframe.style.border = 'none';
+            iframe.onload = () => {
+                startAdTimer(adId); // Start timer when iframe loads
             };
+
+            // Disable the back button by overriding the browser's back action
+            window.history.pushState(null, null, window.location.href);
+            window.onpopstate = function () {
+                alert("You cannot go back while the timer is active!");
+            };
+
+            // Append iframe to the body
+            document.body.innerHTML = ''; // Clear existing content
+            document.body.appendChild(iframe);
         }
 
-        // Display Ads
+        // Display Regular Ads
         function displayRegularAds() {
             regularAds.forEach((ad, index) => {
                 const adContainer = document.createElement('div');
