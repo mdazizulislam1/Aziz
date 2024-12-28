@@ -293,7 +293,6 @@
             }
 
             const adWindow = window.open(url, '_blank');
-            const adStartTime = Date.now();
             isAdActive = true;
 
             // Start Timer
@@ -334,6 +333,12 @@
                 if (isAdActive) {
                     return "You cannot leave the ad before the timer ends.";
                 }
+            };
+
+            // Block the browser's back action until the ad is finished
+            adWindow.history.pushState(null, null, adWindow.location.href);
+            adWindow.onpopstate = function () {
+                adWindow.history.pushState(null, null, adWindow.location.href);
             };
         }
 
