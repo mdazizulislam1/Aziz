@@ -37,15 +37,6 @@
             margin-bottom: 15px;
         }
 
-        .task-card input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-
         .task-card button {
             padding: 10px 20px;
             background: #007bff;
@@ -70,6 +61,35 @@
             color: red;
             margin-left: 10px;
         }
+
+        /* Popup Styles */
+        .popup {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .popup-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            min-width: 300px;
+        }
+
+        .popup .timer {
+            font-size: 2rem;
+            color: red;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -88,6 +108,16 @@
     <div class="ad-section" id="newAdsContainer">
         <h3>New Ads</h3>
         <!-- New ads will be rendered here -->
+    </div>
+</div>
+
+<!-- Popup for showing the timer in a new window -->
+<div class="popup" id="popup">
+    <div class="popup-content">
+        <h4>Ad Task</h4>
+        <p>Complete the task by following the instructions in the link.</p>
+        <a id="adLink" href="" target="_blank">Start Task</a>
+        <div class="timer" id="popupTimer">60:00</div>
     </div>
 </div>
 
@@ -129,42 +159,39 @@
             adLink.target = '_blank';
             adLink.innerText = "Start Task";
 
-            // Only for "existing ads" (first 5 ads), no code input
-            const inputBox = isTimeSensitive ? document.createElement('div') : document.createElement('input');
-            if (!isTimeSensitive) {
-                inputBox.type = 'text';
-                inputBox.placeholder = 'Enter code';
-                inputBox.id = `${ad.id}_input`;
-            }
-
-            const submitButton = document.createElement('button');
-            submitButton.innerText = 'Submit';
-            if (!isTimeSensitive) {
-                submitButton.onclick = () => verifyAd(ad.id, ad.privateCode, ad.reward);
-            }
+            const startButton = document.createElement('button');
+            startButton.innerText = 'Start Task';
+            startButton.onclick = () => openAdWindow(ad, isTimeSensitive);
 
             taskCard.appendChild(adTitle);
             taskCard.appendChild(adDescription);
             taskCard.appendChild(adLink);
-            taskCard.appendChild(inputBox);
-            taskCard.appendChild(submitButton);
-
-            if (isTimeSensitive && index < 5) {
-                const timerDisplay = document.createElement('div');
-                timerDisplay.classList.add('timer');
-                timerDisplay.id = `${ad.id}_timer`;
-                taskCard.appendChild(timerDisplay);
-
-                startTimer(ad.id, 60); // Start a 60 second timer for the first 5 ads
-            }
+            taskCard.appendChild(startButton);
 
             container.appendChild(taskCard);
         });
     }
 
-    function startTimer(adId, duration) {
+    function openAdWindow(ad, isTimeSensitive) {
+        if (isTimeSensitive) {
+            // Open the popup with timer
+            const popup = document.getElementById('popup');
+            const timerDisplay = document.getElementById('popupTimer');
+            const adLink = document.getElementById('adLink');
+
+            adLink.href = ad.url;
+            popup.style.display = 'flex';
+
+            // Start timer
+            startTimer(ad.id, 60, timerDisplay);
+        } else {
+            // Handle non-time-sensitive ad (e.g., requiring code input)
+            alert("Please complete the task and enter the code.");
+        }
+    }
+
+    function startTimer(adId, duration, timerDisplay) {
         let timer = duration, minutes, seconds;
-        const timerDisplay = document.getElementById(`${adId}_timer`);
         
         const interval = setInterval(function () {
             minutes = Math.floor(timer / 60);
@@ -179,21 +206,8 @@
         }, 1000);
     }
 
-    function verifyAd(adId, privateCode, reward) {
-        const userCode = document.getElementById(`${adId}_input`).value.trim();
-
-        if (userCode === privateCode) {
-            alert(`Task completed successfully! You earned ${reward} USD.`);
-            balance += reward;
-            document.getElementById('balance').innerText = balance.toFixed(2);
-            document.getElementById(adId).style.display = 'none';
-        } else {
-            alert('Incorrect code! Please try again.');
-        }
-    }
-
     function enableBackButton() {
-        // Re-enable the back button after the timer is over
+        // Disable the back button during the timer
         history.pushState(null, "", location.href);
         window.onpopstate = function () {
             history.go(1);
