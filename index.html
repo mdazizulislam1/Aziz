@@ -298,14 +298,27 @@
 
             // Start Timer
             let timeRemaining = 60;
-            document.getElementById('timerContainer').style.display = 'block';
+            const timerDiv = adWindow.document.createElement('div');
+            timerDiv.style.position = 'absolute';
+            timerDiv.style.top = '10px';
+            timerDiv.style.left = '50%';
+            timerDiv.style.transform = 'translateX(-50%)';
+            timerDiv.style.background = '#ff0000';
+            timerDiv.style.color = '#fff';
+            timerDiv.style.padding = '5px 20px';
+            timerDiv.style.borderRadius = '5px';
+            timerDiv.style.fontSize = '1.5rem';
+            adWindow.document.body.appendChild(timerDiv);
+
+            adWindow.document.title = "Ad - Timer Active"; // Optionally set window title
+
+            // Timer Update
             adTimer = setInterval(() => {
                 timeRemaining--;
-                document.getElementById('timerContainer').innerText = timeRemaining;
+                timerDiv.innerText = timeRemaining;
 
                 if (timeRemaining <= 0) {
                     clearInterval(adTimer);
-                    document.getElementById('timerContainer').style.display = 'none';
                     alert('Ad time is over! You can now close the window.');
                     isAdActive = false;
                     balance += earnings;
@@ -316,7 +329,8 @@
                 }
             }, 1000);
 
-            adWindow.onbeforeunload = function() {
+            // Disable back button and page leave action until timer ends
+            adWindow.onbeforeunload = function () {
                 if (isAdActive) {
                     return "You cannot leave the ad before the timer ends.";
                 }
