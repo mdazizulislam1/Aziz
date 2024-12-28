@@ -88,7 +88,6 @@
             color: #666;
         }
 
-        /* Menu Button */
         .menu-button {
             position: absolute;
             top: 10px;
@@ -107,7 +106,6 @@
             background: #0056b3;
         }
 
-        /* Menu Popup */
         .menu-popup {
             display: none;
             position: absolute;
@@ -139,7 +137,6 @@
             background: #f9f9f9;
         }
 
-        /* Popup Form Styling */
         .popup-form {
             position: fixed;
             top: 0;
@@ -186,7 +183,6 @@
             background: #0056b3;
         }
 
-        /* Timer Styling */
         .timer-container {
             position: fixed;
             top: 10px;
@@ -211,32 +207,26 @@
     </div>
 
     <div class="container">
-        <!-- Menu Button -->
         <button class="menu-button" onclick="toggleMenu()">☰</button>
 
-        <!-- Menu Popup -->
         <div class="menu-popup" id="menuPopup">
             <a href="#" onclick="showWithdraw()">Withdraw</a>
             <a href="https://t.me/mdazizulislam1">Admin Contact</a>
             <a href="https://t.me/EarningFromMAI" target="_blank">Help</a>
         </div>
 
-        <!-- Profile Section -->
         <div class="profile-info">
             <img src="https://via.placeholder.com/60" alt="Profile Image" id="profileImage">
             <h3 id="profileName">User Name</h3>
         </div>
 
-        <!-- Balance Section -->
         <div class="balance-info">
             <h3>Your Balance:</h3>
             <div class="balance" id="balance">0.000 USD</div>
         </div>
 
-        <!-- Ads Section -->
         <div class="ads-container" id="adsContainer"></div>
 
-        <!-- Footer -->
         <footer>
             <p>All rights reserved © 2024. Contact: <a href="https://t.me/mdazizulislam1">Admin</a></p>
         </footer>
@@ -246,30 +236,26 @@
 
     <script>
         let balance = parseFloat(localStorage.getItem('balance') || '0.000');
-        const adEarnings = 0.050; // Earnings per ad
-        const totalAds = 2; // Total number of ads
+        const adEarnings = 0.050;
+        const totalAds = 2;
         let adStartTime;
         let adTimer;
         let isAdActive = false;
 
-        // Ad Data: 2 ads with different titles, descriptions, and URLs, and different earnings
         const adsData = [
             { title: 'Ad 1', description: 'আপনার তথ্য দিন এবং শেষে যা করতে বলে তাই করবেন যেমন সাইন আপ করা অ্যাপ ডাউনলোড করা আপনি অ্যাপ ডাউনলোড করে ১ ঘন্টা পর আবার ডিলিট করে দিয়েন সমস্যা নাই 0.020 USD!', url: 'https://luglawhaulsano.net/4/8635162/ad1', earnings: 0.020 },
             { title: 'Ad 2', description: 'Watch and earn 4.00 USD!', url: 'https://example.com/ad2', earnings: 0.00 },
         ];
 
-        // Toggle Menu Popup
         function toggleMenu() {
             const menuPopup = document.getElementById('menuPopup');
             menuPopup.style.display = menuPopup.style.display === 'block' ? 'none' : 'block';
         }
 
-        // Show Withdraw Message
         function showWithdraw() {
             alert(`Development in progress. If your balance is 5 USD or more, please contact the admin to withdraw.`);
         }
 
-        // Save Name and Close Popup
         function saveName() {
             const username = document.getElementById('usernameInput').value.trim();
             if (username) {
@@ -281,12 +267,10 @@
             }
         }
 
-        // Handle Ad Click
         function handleAdClick(adId, url, earnings) {
             let lastClicked = localStorage.getItem(adId + '_lastClicked');
             let now = Date.now();
 
-            // Check if the ad has been clicked within the last 24 hours
             if (lastClicked && (now - lastClicked < 24 * 60 * 60 * 1000)) {
                 alert('You can only watch this ad once every 24 hours.');
                 return;
@@ -295,7 +279,6 @@
             const adWindow = window.open(url, '_blank');
             isAdActive = true;
 
-            // Start Timer
             let timeRemaining = 60;
             const timerDiv = adWindow.document.createElement('div');
             timerDiv.style.position = 'absolute';
@@ -309,9 +292,8 @@
             timerDiv.style.fontSize = '1.5rem';
             adWindow.document.body.appendChild(timerDiv);
 
-            adWindow.document.title = "Ad - Timer Active"; // Optionally set window title
+            adWindow.document.title = "Ad - Timer Active";
 
-            // Timer Update
             adTimer = setInterval(() => {
                 timeRemaining--;
                 timerDiv.innerText = timeRemaining;
@@ -328,21 +310,18 @@
                 }
             }, 1000);
 
-            // Disable back button and page leave action until timer ends
             adWindow.onbeforeunload = function () {
                 if (isAdActive) {
                     return "You cannot leave the ad before the timer ends.";
                 }
             };
 
-            // Block the browser's back action until the ad is finished
             adWindow.history.pushState(null, null, adWindow.location.href);
             adWindow.onpopstate = function () {
                 adWindow.history.pushState(null, null, adWindow.location.href);
             };
         }
 
-        // Load User Info and Ads on Page Load
         window.onload = function () {
             const savedName = localStorage.getItem('username');
             if (savedName) {
@@ -355,9 +334,8 @@
             const savedBalance = parseFloat(localStorage.getItem('balance') || '0.000');
             document.getElementById('balance').innerText = `${savedBalance.toFixed(2)} USD`;
 
-            // Show ads
             const adsContainer = document.getElementById('adsContainer');
-            adsContainer.innerHTML = ''; // Clear the container before adding ads
+            adsContainer.innerHTML = '';
 
             for (let i = 0; i < totalAds; i++) {
                 const adCard = document.createElement('div');
@@ -378,7 +356,6 @@
                 adsContainer.appendChild(adCard);
             }
 
-            // Hide ads if they were watched in the last 24 hours
             for (let i = 0; i < totalAds; i++) {
                 let adLastClicked = localStorage.getItem(`ad${i + 1}_lastClicked`);
                 let now = Date.now();
