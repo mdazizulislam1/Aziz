@@ -3,218 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Earning From M A I</title>
+    <title>Ad Task System</title>
     <style>
-        /* General Styling */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
+            background: #f4f4f4;
         }
 
         .container {
-            width: 90%;
-            max-width: 700px;
+            max-width: 800px;
+            margin: 20px auto;
             background: #fff;
-            border-radius: 8px;
             padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            margin-top: 20px;
-            position: relative;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        h2 {
-            color: #333;
-            font-size: 1.8rem;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .profile-info, .balance-info, .ads-container {
-            margin-bottom: 20px;
-        }
-
-        .profile-info img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            margin-bottom: 10px;
-        }
-
-        .profile-info h3 {
-            font-size: 1.2rem;
-            margin: 5px 0;
-        }
-
-        .balance {
-            font-size: 1.6rem;
-            color: #28a745;
-            font-weight: bold;
+        h1, h3 {
             text-align: center;
         }
 
-        .ad-card {
+        .ad-section {
+            margin-bottom: 20px;
+        }
+
+        .task-card {
             padding: 15px;
             background: #f9f9f9;
             border: 1px solid #ddd;
             border-radius: 8px;
-            text-align: center;
             margin-bottom: 15px;
         }
 
-        .ad-card button {
+        .task-card input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .task-card button {
             padding: 10px 20px;
             background: #007bff;
             color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background 0.3s;
         }
 
-        .ad-card button:hover {
+        .task-card button:hover {
             background: #0056b3;
         }
 
-        footer {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 0.9rem;
-            color: #666;
+        #balance-display {
+            text-align: right;
+            margin-bottom: 20px;
         }
 
-        /* Timer Styling */
-        .timer-container {
-            background: #ff0000;
-            color: #fff;
-            padding: 5px 20px;
-            border-radius: 5px;
+        .timer {
+            display: inline-block;
             font-size: 1.5rem;
-            text-align: center;
-            margin-top: 10px;
+            color: red;
+            margin-left: 10px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Profile Section -->
-        <div class="profile-info">
-            <img src="https://via.placeholder.com/60" alt="Profile Image" id="profileImage">
-            <h3 id="profileName">User Name</h3>
-        </div>
 
-        <!-- Balance Section -->
-        <div class="balance-info">
-            <h3>Your Balance:</h3>
-            <div class="balance" id="balance">0.000 USD</div>
-        </div>
-
-        <!-- Ads Section -->
-        <div class="ads-container" id="adsContainer"></div>
-
-        <!-- Footer -->
-        <footer>
-            <p>All rights reserved © 2024. Contact: <a href="https://t.me/mdazizulislam1">Admin</a></p>
-        </footer>
+<div class="container">
+    <h1>Ad Task System</h1>
+    <div id="balance-display">
+        Balance: <span id="balance">0.00</span> USD
     </div>
 
-    <script>
-        let balance = parseFloat(localStorage.getItem('balance') || '0.000');
-        const adEarnings = 0.050; // Earnings per ad
-        const totalAds = 2; // Total number of ads
-        let adTimer;
-        let isAdActive = false;
+    <div class="ad-section" id="existingAdsContainer">
+        <h3>Existing Ads</h3>
+        <!-- Existing ads will be rendered here -->
+    </div>
 
-        // Ad Data: 2 ads with different titles, descriptions, and URLs, and different earnings
-        const adsData = [
-            { title: 'Ad 1', description: 'আপনার তথ্য দিন এবং শেষে যা করতে বলে তা করবেন যেমন সাইন আপ করা অ্যাপ ডাউনলোড করা আপনি অ্যাপ ডাউনলোড করে ১ ঘন্টা পর আবার ডিলিট করে দিয়েন সমস্যা নাই 0.020 USD!', url: 'https://luglawhaulsano.net/4/8635162/ad1', earnings: 0.020 },
-            { title: 'Ad 2', description: 'Watch and earn 4.00 USD!', url: 'https://example.com/ad2', earnings: 0.00 },
-        ];
+    <div class="ad-section" id="newAdsContainer">
+        <h3>New Ads</h3>
+        <!-- New ads will be rendered here -->
+    </div>
+</div>
 
-        // Handle Ad Click
-        function handleAdClick(adId, url, earnings) {
-            if (isAdActive) {
-                alert('You are already watching an ad!');
-                return;
+<script>
+    let balance = 0.0;
+
+    const existingAdsData = [
+        { id: "ad1", title: "Ad 1", description: "Visit the link and complete the task.", url: "https://example.com/ad1", reward: 0.20 },
+        { id: "ad2", title: "Ad 2", description: "Visit the link and complete the task.", url: "https://example.com/ad2", reward: 0.25 },
+        { id: "ad3", title: "Ad 3", description: "Visit the link and complete the task.", url: "https://example.com/ad3", reward: 0.30 },
+        { id: "ad4", title: "Ad 4", description: "Visit the link and complete the task.", url: "https://example.com/ad4", reward: 0.15 },
+        { id: "ad5", title: "Ad 5", description: "Visit the link and complete the task.", url: "https://example.com/ad5", reward: 0.20 }
+    ];
+
+    const newAdsData = [
+        { id: "task1", title: "Task 1", description: "Click the link to open the task.", url: "https://example.com/task1", privateCode: "12345", reward: 0.10 },
+        { id: "task2", title: "Task 2", description: "Submit the private code after completing the task.", url: "https://example.com/task2", privateCode: "67890", reward: 0.15 },
+        { id: "task3", title: "Task 3", description: "Click the link to open the task.", url: "https://example.com/task3", privateCode: "54321", reward: 0.12 },
+        { id: "task4", title: "Task 4", description: "Submit the private code after completing the task.", url: "https://example.com/task4", privateCode: "98765", reward: 0.14 },
+        { id: "task5", title: "Task 5", description: "Click the link to open the task.", url: "https://example.com/task5", privateCode: "11223", reward: 0.18 }
+    ];
+
+    function renderAds(containerId, adsData, isTimeSensitive = false) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+
+        adsData.forEach((ad, index) => {
+            const taskCard = document.createElement('div');
+            taskCard.classList.add('task-card');
+
+            const adTitle = document.createElement('h4');
+            adTitle.innerText = ad.title;
+
+            const adDescription = document.createElement('p');
+            adDescription.innerText = ad.description;
+
+            const adLink = document.createElement('a');
+            adLink.href = ad.url;
+            adLink.target = '_blank';
+            adLink.innerText = "Start Task";
+
+            // Only for "existing ads" (first 5 ads), no code input
+            const inputBox = isTimeSensitive ? document.createElement('div') : document.createElement('input');
+            if (!isTimeSensitive) {
+                inputBox.type = 'text';
+                inputBox.placeholder = 'Enter code';
+                inputBox.id = `${ad.id}_input`;
             }
 
-            const adCard = document.getElementById(adId);
-            const timerDiv = document.createElement('div');
-            timerDiv.classList.add('timer-container');
-            adCard.appendChild(timerDiv);
+            const submitButton = document.createElement('button');
+            submitButton.innerText = 'Submit';
+            if (!isTimeSensitive) {
+                submitButton.onclick = () => verifyAd(ad.id, ad.privateCode, ad.reward);
+            }
 
-            let timeRemaining = 60;
-            isAdActive = true;
-            
-            // Timer Update
-            adTimer = setInterval(() => {
-                timeRemaining--;
-                timerDiv.innerText = `Time Left: ${timeRemaining}s`;
+            taskCard.appendChild(adTitle);
+            taskCard.appendChild(adDescription);
+            taskCard.appendChild(adLink);
+            taskCard.appendChild(inputBox);
+            taskCard.appendChild(submitButton);
 
-                if (timeRemaining <= 0) {
-                    clearInterval(adTimer);
-                    alert('Ad time is over! You can now close the ad.');
-                    balance += earnings;
-                    localStorage.setItem('balance', balance.toFixed(2));
-                    document.getElementById('balance').innerText = `${balance.toFixed(2)} USD`;
-                    isAdActive = false;
+            if (isTimeSensitive && index < 5) {
+                const timerDisplay = document.createElement('div');
+                timerDisplay.classList.add('timer');
+                timerDisplay.id = `${ad.id}_timer`;
+                taskCard.appendChild(timerDisplay);
 
-                    // Hide ad for 24 hours
-                    localStorage.setItem(adId + '_lastClicked', Date.now());
-                    adCard.style.display = 'none';
-                }
-            }, 1000);
+                startTimer(ad.id, 60); // Start a 60 second timer for the first 5 ads
+            }
+
+            container.appendChild(taskCard);
+        });
+    }
+
+    function startTimer(adId, duration) {
+        let timer = duration, minutes, seconds;
+        const timerDisplay = document.getElementById(`${adId}_timer`);
+        
+        const interval = setInterval(function () {
+            minutes = Math.floor(timer / 60);
+            seconds = timer % 60;
+
+            timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+
+            if (--timer < 0) {
+                clearInterval(interval);
+                enableBackButton();
+            }
+        }, 1000);
+    }
+
+    function verifyAd(adId, privateCode, reward) {
+        const userCode = document.getElementById(`${adId}_input`).value.trim();
+
+        if (userCode === privateCode) {
+            alert(`Task completed successfully! You earned ${reward} USD.`);
+            balance += reward;
+            document.getElementById('balance').innerText = balance.toFixed(2);
+            document.getElementById(adId).style.display = 'none';
+        } else {
+            alert('Incorrect code! Please try again.');
         }
+    }
 
-        // Load User Info and Ads on Page Load
-        window.onload = function () {
-            const savedName = localStorage.getItem('username');
-            if (savedName) {
-                document.getElementById('profileName').innerText = savedName;
-            } else {
-                document.getElementById('profileName').innerText = 'Please enter your name';
-            }
-
-            const savedBalance = parseFloat(localStorage.getItem('balance') || '0.000');
-            document.getElementById('balance').innerText = `${savedBalance.toFixed(2)} USD`;
-
-            // Show ads
-            const adsContainer = document.getElementById('adsContainer');
-            adsContainer.innerHTML = ''; // Clear the container before adding ads
-
-            for (let i = 0; i < totalAds; i++) {
-                const adCard = document.createElement('div');
-                adCard.classList.add('ad-card');
-                adCard.id = `ad${i + 1}`;
-
-                const adContent = document.createElement('p');
-                adContent.innerText = `${adsData[i].title}: ${adsData[i].description}`;
-
-                const adButton = document.createElement('button');
-                adButton.innerText = 'Watch Ad';
-                adButton.onclick = function () {
-                    handleAdClick(`ad${i + 1}`, adsData[i].url, adsData[i].earnings);
-                };
-
-                adCard.appendChild(adContent);
-                adCard.appendChild(adButton);
-                adsContainer.appendChild(adCard);
-            }
-
-            // Hide ads if they were watched in the last 24 hours
-            for (let i = 0; i < totalAds; i++) {
-                let adLastClicked = localStorage.getItem(`ad${i + 1}_lastClicked`);
-                let now = Date.now();
-                if (adLastClicked && (now - adLastClicked < 24 * 60 * 60 * 1000)) {
-                    document.getElementById(`ad${i + 1}`).style.display = 'none';
-                }
-            }
+    function enableBackButton() {
+        // Re-enable the back button after the timer is over
+        history.pushState(null, "", location.href);
+        window.onpopstate = function () {
+            history.go(1);
         };
-    </script>
+    }
+
+    window.onload = function () {
+        renderAds('existingAdsContainer', existingAdsData, true); // For first 5 ads with timer (no code)
+        renderAds('newAdsContainer', newAdsData, false); // For remaining ads, only code verification
+    };
+</script>
+
 </body>
 </html>
