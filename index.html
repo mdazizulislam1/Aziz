@@ -87,10 +87,126 @@
             font-size: 0.9rem;
             color: #666;
         }
+
+        /* Menu Button */
+        .menu-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #007bff;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            z-index: 10;
+        }
+
+        .menu-button:hover {
+            background: #0056b3;
+        }
+
+        /* Menu Popup */
+        .menu-popup {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            width: 200px;
+            z-index: 10;
+        }
+
+        .menu-popup a {
+            display: block;
+            padding: 10px;
+            color: #007bff;
+            text-decoration: none;
+            border-bottom: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        .menu-popup a:last-child {
+            border-bottom: none;
+        }
+
+        .menu-popup a:hover {
+            background: #f9f9f9;
+        }
+
+        /* Popup Form Styling */
+        .popup-form {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .popup-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .popup-content input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .popup-content button {
+            padding: 10px 20px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .popup-content button:hover {
+            background: #0056b3;
+        }
     </style>
 </head>
 <body>
+    <div class="popup-form" id="popupForm">
+        <div class="popup-content">
+            <h3>Enter Your Name</h3>
+            <input type="text" id="usernameInput" placeholder="Your Name">
+            <button onclick="saveName()">Save</button>
+        </div>
+    </div>
+
     <div class="container">
+        <!-- Menu Button -->
+        <button class="menu-button" onclick="toggleMenu()">☰</button>
+
+        <!-- Menu Popup -->
+        <div class="menu-popup" id="menuPopup">
+            <a href="#" onclick="showWithdraw()">Withdraw</a>
+            <a href="https://t.me/mdazizulislam1">Admin Contact</a>
+            <a href="https://t.me/EarningFromMAI" target="_blank">Help</a>
+        </div>
+
         <!-- Profile Section -->
         <div class="profile-info">
             <img src="https://via.placeholder.com/60" alt="Profile Image" id="profileImage">
@@ -115,12 +231,37 @@
     <script>
         let balance = parseFloat(localStorage.getItem('balance') || '0.000');
         const adEarnings = 0.050; // Earnings per ad
-        const totalAds = 2; // Total number of ads
+        const totalAds = 3; // Total number of ads
 
+        // Ad Data: 3 ads with different titles, descriptions, and URLs, and different earnings
         const adsData = [
-            { title: 'Ad 1', description: 'Ad description for ad 1.', url: 'https://example.com/ad1', earnings: 0.020 },
-            { title: 'Ad 2', description: 'Ad description for ad 2.', url: 'https://example.com/ad2', earnings: 0.025 },
+            { title: 'Ad 1', description: 'আপনার তথ্য দিন এবং শেষে যা করতে বলে তাই করবেন যেমন সাইন আপ করা অ্যাপ ডাউনলোড করা আপনি অ্যাপ ডাউনলোড করে ১ ঘন্টা পর আবার ডিলিট করে দিয়েন সমস্যা নাই 0.030 USD!', url: 'https://whomeenoaglauns.com/4/8696844/ad1', earnings: 0.020 },
+            { title: 'Ad 2', description: 'Watch and earn 4.00 USD!', url: 'https://www.profitablecpmrate.com/php5rh5gcy?key=79a7840bd90e14eb694548b13934d45b/ad2', earnings: 0.025 },
+            { title: 'Ad 2', description: 'Watch and earn 4.00 USD!', url: 'https://workupjob.com/job/ad2', earnings: 0.025 },
         ];
+
+        // Toggle Menu Popup
+        function toggleMenu() {
+            const menuPopup = document.getElementById('menuPopup');
+            menuPopup.style.display = menuPopup.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Show Withdraw Message
+        function showWithdraw() {
+            alert(`Development in progress. If your balance is 5 USD or more, please contact the admin to withdraw.`);
+        }
+
+        // Save Name and Close Popup
+        function saveName() {
+            const username = document.getElementById('usernameInput').value.trim();
+            if (username) {
+                localStorage.setItem('username', username);
+                document.getElementById('profileName').innerText = username;
+                document.getElementById('popupForm').style.display = 'none';
+            } else {
+                alert('Please enter a valid name.');
+            }
+        }
 
         // Handle Ad Click
         function handleAdClick(adId, url, earnings) {
@@ -133,19 +274,51 @@
                 return;
             }
 
-            // Immediately update balance upon ad click
-            alert(`You have earned ${earnings} USD!`);
-            balance += earnings;
-            localStorage.setItem('balance', balance.toFixed(2));
-            document.getElementById('balance').innerText = `${balance.toFixed(2)} USD`;
-            localStorage.setItem(adId + '_lastClicked', now);
+            const adWindow = window.open(url, '_blank');
+            const adStartTime = Date.now();
+
+            // Disable the close or back action during the ad viewing period
+            adWindow.onbeforeunload = function() {
+                return "Are you sure you want to leave? You must watch the ad for at least 60 seconds to earn!";
+            };
+
+            const checkAdInterval = setInterval(() => {
+                if (adWindow.closed) {
+                    const elapsedTime = (Date.now() - adStartTime) / 1000; // in seconds
+
+                    if (elapsedTime >= 60) {
+                        // Update balance only if the ad was watched for at least 60 seconds
+                        alert(`You have earned ${earnings} USD!`);
+                        balance += earnings;
+                        localStorage.setItem('balance', balance.toFixed(2));
+                        document.getElementById('balance').innerText = `${balance.toFixed(2)} USD`;
+                        localStorage.setItem(adId + '_lastClicked', now);
+
+                        // Hide the ad for 24 hours after successful earnings
+                        document.getElementById(adId).style.display = 'none';
+                    } else {
+                        alert('You must watch the ad for at least 60 seconds to earn!');
+                    }
+
+                    clearInterval(checkAdInterval);
+                }
+            }, 1000);
         }
 
-        // Load Ads on Page Load
+        // Load User Info and Ads on Page Load
         window.onload = function () {
+            const savedName = localStorage.getItem('username');
+            if (savedName) {
+                document.getElementById('profileName').innerText = savedName;
+                document.getElementById('popupForm').style.display = 'none';
+            } else {
+                document.getElementById('popupForm').style.display = 'flex';
+            }
+
             const savedBalance = parseFloat(localStorage.getItem('balance') || '0.000');
             document.getElementById('balance').innerText = `${savedBalance.toFixed(2)} USD`;
 
+            // Show ads
             const adsContainer = document.getElementById('adsContainer');
             adsContainer.innerHTML = ''; // Clear the container before adding ads
 
@@ -166,6 +339,15 @@
                 adCard.appendChild(adContent);
                 adCard.appendChild(adButton);
                 adsContainer.appendChild(adCard);
+            }
+
+            // Hide ads if they were watched in the last 24 hours
+            for (let i = 0; i < totalAds; i++) {
+                let adLastClicked = localStorage.getItem(`ad${i + 1}_lastClicked`);
+                let now = Date.now();
+                if (adLastClicked && (now - adLastClicked < 24 * 60 * 60 * 1000)) {
+                    document.getElementById(`ad${i + 1}`).style.display = 'none';
+                }
             }
         };
     </script>
