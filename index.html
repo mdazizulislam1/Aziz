@@ -231,13 +231,12 @@
     <script>
         let balance = parseFloat(localStorage.getItem('balance') || '0.000');
         const adEarnings = 0.050; // Earnings per ad
-        const totalAds = 3; // Total number of ads
+        const totalAds = 20; // Total number of ads
 
-        // Ad Data: 3 ads with different titles, descriptions, and URLs, and different earnings
+        // Ad Data: 20 ads with different titles, descriptions, and URLs, and different earnings
         const adsData = [
-            { title: 'Ad 1', description: 'আপনার তথ্য দিন এবং শেষে যা করতে বলে তাই করবেন যেমন সাইন আপ করা অ্যাপ ডাউনলোড করা আপনি অ্যাপ ডাউনলোড করে ১ ঘন্টা পর আবার ডিলিট করে দিয়েন সমস্যা নাই 0.030 USD!', url: 'https://whomeenoaglauns.com/4/8696844/ad1', earnings: 0.020 },
-            { title: 'Ad 2', description: 'Watch and earn 4.00 USD!', url: 'https://www.profitablecpmrate.com/php5rh5gcy?key=79a7840bd90e14eb694548b13934d45b/ad2', earnings: 0.025 },
-            { title: 'Ad 2', description: 'Watch and earn 4.00 USD!', url: 'https://workupjob.com/job/ad2', earnings: 0.025 },
+            { title: 'Ad 1', description: 'আপনার তথ্য দিন তথ্য দেওয়া শেষে একটি ভিডিও আসবে। কাজ শেষ -   কাজটি ১ মিনিট সময় নিয়ে করতে হবে এক মিনিটের বেশি সময় ধরে করলে সমস্যা নাই কিন্তু এক মিনিটের কম সময়ে করলে ব্যালেন্স যোগ হবে না। আপনার কাজ এক মিনিট আগেও শেষ হলে এক মিনিট পরেই বের হবেন। 0.830 USD!', url: 'https://luglawhaulsano.net/4/8635162/ad1', earnings: 0.020 },
+            { title: 'Ad 2', description: 'আপনার তথ্য দিন তথ্য দেওয়া শেষে একটি ভিডিও আসবে। কাজ শেষ -   কাজটি ১ মিনিট সময় নিয়ে করতে হবে এক মিনিটের বেশি সময় ধরে করলে সমস্যা নাই কিন্তু এক মিনিটের কম সময়ে করলে ব্যালেন্স যোগ হবে না। আপনার কাজ এক মিনিট আগেও শেষ হলে এক মিনিট পরেই বের হবেন। 0.725 USD!', url: 'https://example.com/ad2', earnings: 0.00 },
         ];
 
         // Toggle Menu Popup
@@ -276,11 +275,6 @@
 
             const adWindow = window.open(url, '_blank');
             const adStartTime = Date.now();
-
-            // Disable the close or back action during the ad viewing period
-            adWindow.onbeforeunload = function() {
-                return "Are you sure you want to leave? You must watch the ad for at least 60 seconds to earn!";
-            };
 
             const checkAdInterval = setInterval(() => {
                 if (adWindow.closed) {
