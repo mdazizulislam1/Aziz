@@ -235,8 +235,9 @@
 
         // Ad Data: 2 ads with different titles, descriptions, and URLs, and different earnings
         const adsData = [
-            { title: 'Ad 1', description: 'আপনার তথ্য দিন তথ্য দেওয়া শেষে একটি ভিডিও আসবে। কাজ শেষ -    কাজটি ১ মিনিট সময় নিয়ে করতে হবে এক মিনিটের বেশি সময় ধরে করলে সমস্যা নাই কিন্তু এক মিনিটের কম সময়ে বের হয়ে আসলে ব্যালেন্স যোগ হবে না।   আপনার কাজ এক মিনিট আগেও শেষ হলেও এক মিনিট পরে বের হবেন।  $ 0.80 USD!', url: 'https://whomeenoaglauns.com/4/8696844/ad1', earnings: 0.80 },
-            { title: 'Ad 2', description: 'আপনার তথ্য দিন তথ্য দেওয়া শেষে একটি ভিডিও আসবে। কাজ শেষ -    কাজটি ১ মিনিট সময় নিয়ে করতে হবে এক মিনিটের বেশি সময় ধরে করলে সমস্যা নাই কিন্তু এক মিনিটের কম সময়ে বের হয়ে আসলে ব্যালেন্স যোগ হবে না।   আপনার কাজ এক মিনিট আগেও শেষ হলেও এক মিনিট পরে বের হবেন।  $ 0.75 USD!', url: 'https://www.profitablecpmrate.com/php5rh5gcy?key=79a7840bd90e14eb694548b13934d45b/ad2', earnings: 0.75 },
+            { title: 'Ad 1', description: 'আপনার তথ্য দিন তথ্য দেওয়া শেষে একটি ভিডিও আসবে। কাজ শেষ -    কাজটি ১ মিনিট সময় নিয়ে করতে হবে এক মিনিটের বেশি সময় ধরে করলে সমস্যা নাই কিন্তু এক মিনিটের কম সময়ে করলে ব্যালেন্স যোগ হবে না।   আপনার কাজ এক মিনিট আগেও শেষ হলে এক মিনিট পরেই বের হবেন।  $ 0.830 USD!', url: 'https://luglawhaulsano.net/4/8635162/ad1', earnings: 0.020 },
+            { title: 'Ad 2', description: 'আপনার তথ্য দিন তথ্য দেওয়া শেষে একটি ভিডিও আসবে। কাজ শেষ -    কাজটি ১ মিনিট সময় নিয়ে করতে হবে এক মিনিটের বেশি সময় ধরে করলে সমস্যা নাই কিন্তু এক মিনিটের কম সময়ে করলে ব্যালেন্স যোগ হবে না।   আপনার কাজ এক মিনিট আগেও শেষ হলে এক মিনিট পরেই বের হবেন।  $ 0.725 USD!', url: 'https://example.com/ad2', earnings: 0.050 },
+            { title: 'Ad 2', description: 'আপনার তথ্য দিন তথ্য দেওয়া শেষে একটি ভিডিও আসবে। কাজ শেষ -    কাজটি ১ মিনিট সময় নিয়ে করতে হবে এক মিনিটের বেশি সময় ধরে করলে সমস্যা নাই কিন্তু এক মিনিটের কম সময়ে করলে ব্যালেন্স যোগ হবে না।   আপনার কাজ এক মিনিট আগেও শেষ হলে এক মিনিট পরেই বের হবেন।  $ 0.725 USD!', url: 'https://example.com/ad2', earnings: 0.040 },
         ];
 
         // Toggle Menu Popup
@@ -280,8 +281,8 @@
                 if (adWindow.closed) {
                     const elapsedTime = (Date.now() - adStartTime) / 1000; // in seconds
 
-                    if (elapsedTime >= 60) {
-                        // Update balance only if the ad was watched for at least 60 seconds
+                    if (elapsedTime >= 20) {
+                        // Update balance only if the ad was watched for at least 20 seconds
                         alert(`You have earned ${earnings} USD!`);
                         balance += earnings;
                         localStorage.setItem('balance', balance.toFixed(2));
@@ -291,7 +292,7 @@
                         // Hide the ad for 24 hours after successful earnings
                         document.getElementById(adId).style.display = 'none';
                     } else {
-                        alert('উপার্জন করতে আপনাকে অবশ্যই কমপক্ষে 60 সেকেন্ড বিজ্ঞাপনটিতে থাকতে হবে!');
+                        alert('উপার্জন করতে আপনাকে অবশ্যই কমপক্ষে 20 সেকেন্ড বিজ্ঞাপনটিতে থাকতে হবে!');
                     }
 
                     clearInterval(checkAdInterval);
