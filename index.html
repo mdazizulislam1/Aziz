@@ -203,8 +203,8 @@
         <!-- Menu Popup -->
         <div class="menu-popup" id="menuPopup">
             <a href="#" onclick="showWithdraw()">Withdraw</a>
+            <a href="https://t.me/EarningFromMAI" target="_blank">User Guide</a>
             <a href="https://t.me/mdazizulislam1">Admin Contact</a>
-            <a href="https://t.me/EarningFromMAI" target="_blank">Help</a>
         </div>
 
         <!-- Profile Section -->
@@ -231,14 +231,15 @@
     <script>
         let balance = parseFloat(localStorage.getItem('balance') || '0.000');
         const adEarnings = 0.050; // Earnings per ad
-        const totalAds = 4; // Total number of ads
+        const totalAds = 5; // Total number of ads
 
-        // Ad Data: 4 ads with different titles, descriptions, and URLs, and different earnings
+        // Ad Data: 5 ads with different titles, descriptions, and URLs, and different earnings
         const adsData = [
             { title: 'Ad 1', description: 'আপনার তথ্য দিন তথ্য দেওয়া শেষে একটি ভিডিও আসবে না হলে সাইন আপ করতে বলবে যেটা আসবে সেটা করবেন কাজ শেষ। - বিশেষ নোটিশ আপনি Watch Ad বাটনে ক্লিক করার পর যদি কাজটি নাও করতে চান তারপরও আপনাকে ২০ সেকেন্ড থাকতে হবে অন্যথায় কাজটি আর করতে পারবেন না।  $ 0.555 USD!', url: 'https://whomeenoaglauns.com/4/8696844/ad1', earnings: 0.555 },
             { title: 'Ad 2', description: 'আপনার তথ্য দিন তথ্য দেওয়া শেষে একটি ভিডিও আসবে না হলে সাইন আপ করতে বলবে যেটা আসবে সেটা করবেন কাজ শেষ। - বিশেষ নোটিশ আপনি Watch Ad বাটনে ক্লিক করার পর যদি কাজটি নাও করতে চান তারপরও আপনাকে ২০ সেকেন্ড থাকতে হবে অন্যথায় কাজটি আর করতে পারবেন না।  $ 0.515 USD!', url: 'https://www.profitablecpmrate.com/php5rh5gcy?key=79a7840bd90e14eb694548b13934d45b/ad2', earnings: 0.515 },
             { title: 'Ad 3', description: 'আপনার তথ্য দিন তথ্য দেওয়া শেষে একটি ভিডিও আসবে না হলে সাইন আপ করতে বলবে যেটা আসবে সেটা করবেন কাজ শেষ। - বিশেষ নোটিশ আপনি Watch Ad বাটনে ক্লিক করার পর যদি কাজটি নাও করতে চান তারপরও আপনাকে ২০ সেকেন্ড থাকতে হবে অন্যথায় কাজটি আর করতে পারবেন না।  $ 0.255 USD!', url: 'https://clk.kim/XK9Q/ad3', earnings: 0.255 },
-            { title: 'Ad 4', description: 'আপনার তথ্য দিন তথ্য দেওয়া শেষে একটি ভিডিও আসবে না হলে সাইন আপ করতে বলবে যেটা আসবে সেটা করবেন কাজ শেষ। - বিশেষ নোটিশ আপনি Watch Ad বাটনে ক্লিক করার পর যদি কাজটি নাও করতে চান তারপরও আপনাকে ২০ সেকেন্ড থাকতে হবে অন্যথায় কাজটি আর করতে পারবেন না।  $ 0.355 USD!', url: 'https://whomeenoaglauns.com/4/8696653/ad4', earnings: 0.355 },
+            { title: 'Ad 4', description: 'আপনার তথ্য দিন তথ্য দেওয়া শেষে একটি ভিডিও আসবে না হলে সাইন আপ করতে বলবে যেটা আসবে সেটা করবেন কাজ শেষ। - বিশেষ নোটিশ আপনি Watch Ad বাটনে ক্লিক করার পর যদি কাজটি নাও করতে চান তারপরও আপনাকে ২০ সেকেন্ড থাকতে হবে অন্যথায় কাজটি আর করতে পারবেন না।  $ 0.455 USD!', url: 'https://whomeenoaglauns.com/4/8696653/ad4', earnings: 0.455 },
+            { title: 'Ad 5', description: 'আপনার তথ্য দিন তথ্য দেওয়া শেষে একটি ভিডিও আসবে না হলে সাইন আপ করতে বলবে যেটা আসবে সেটা করবেন কাজ শেষ। - বিশেষ নোটিশ আপনি Watch Ad বাটনে ক্লিক করার পর যদি কাজটি নাও করতে চান তারপরও আপনাকে ২০ সেকেন্ড থাকতে হবে অন্যথায় কাজটি আর করতে পারবেন না।  $ 0.555 USD!', url: 'https://www.profitablecpmrate.com/p3e6cikvs?key=5f781bb3241dcc6049cc66deae272b08/ad5', earnings: 0.555 },
         ];
 
         // Toggle Menu Popup
